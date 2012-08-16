@@ -12,6 +12,9 @@
 #define SYLPF_SET_RC_BOOLEAN(key, value) \
   g_key_file_set_boolean(SYLPF_OPTION.rcfile, SYLPF_ID, key, value)
 
+#define SYLPF_GET_RC_SHOW_ATTACH_TAB \
+  sylpf_get_rc_integer(SYLPF_SYLPHEEDRC, "Common", "show_attach_tab")
+
 gint sylpf_get_rc_integer(const gchar *rcname,
                           const gchar *group,
                           const gchar *key);
