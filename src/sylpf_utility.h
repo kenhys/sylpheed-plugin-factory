@@ -18,8 +18,12 @@
 #define SYLPF_GET_RC_SHOW_ATTACH_TAB \
   sylpf_get_rc_integer(SYLPF_SYLPHEEDRC, "Common", "show_attach_tab")
 
+#define SYLPF_GET_RC_MESSAGE_FONT_NAME \
+  sylpf_get_rc_string(SYLPF_SYLPHEEDRC, "Common", "message_font_name")
+
 gint sylpf_get_rc_integer(const gchar *rcname,
                           const gchar *group,
                           const gchar *key);
+
 
 #endif
