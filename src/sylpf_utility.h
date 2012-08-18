@@ -25,5 +25,8 @@ gint sylpf_get_rc_integer(const gchar *rcname,
                           const gchar *group,
                           const gchar *key);
 
+gchar *sylpf_get_rc_string(const gchar *rcname,
+                           const gchar *group,
+                           const gchar *key);
 
 #endif
