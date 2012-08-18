@@ -18,7 +18,7 @@ gint sylpf_get_rc_integer(const gchar *rcname,
   rcfile = g_key_file_new();
   g_key_file_load_from_file(rcfile, rcpath, G_KEY_FILE_KEEP_COMMENTS, NULL);
 
-  ivalue = GET_RC_INT(rcfile, group, key);
+  ivalue = SYLPF_GET_RC_INTEGER(rcfile, group, key);
 
   g_key_file_free(rcfile);
   g_free(rcpath);
