@@ -3,7 +3,13 @@
 
 #define SYLPF_SYLPHEEDRC "sylpheedrc"
 
-#define SYLPF_GET_RC_INTEGER(keyfile, group, key) \
+typedef struct  _SylPluginFactoryOption SylPluginFactoryOption;
+struct _SylPluginFactoryOption {
+  gchar *rcpath;
+  GKeyFile *rcfile;
+};
+
+#define SYLPF_GET_RC_INTEGER(keyfile, group, key)              \
   g_key_file_get_integer((keyfile), (group), (key), NULL)
 
 #define SYLPF_GET_RC_BOOLEAN(keyarg) \
