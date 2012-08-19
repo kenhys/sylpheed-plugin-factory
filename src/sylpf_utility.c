@@ -46,3 +46,12 @@ gchar *sylpf_get_rc_string(const gchar *rcname,
 
   return value;
 }
+
+void sylpf_load_option_rcfile(SylPluginFactoryOption *option,
+                              const gchar *rcname)
+{
+  option->rcpath = g_strconcat(get_rc_dir(), G_DIR_SEPARATOR_S, rcname, NULL);
+  option->rcfile = g_key_file_new();
+
+  g_key_file_load_from_file(option->rcfile, option->rcpath, G_KEY_FILE_KEEP_COMMENTS, NULL);
+}
