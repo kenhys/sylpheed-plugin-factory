@@ -1,6 +1,7 @@
 SUBDIRS = src
 
 PLUGIN_NAME = sylplugin_factory
+PLUGIN_SO = src/.libs/$(PLUGIN_NAME).so
 
 update-po:
 	xgettext src/*.[ch] -k_ -kN_ -o po/$(PLUGIN_NAME).pot
@@ -11,7 +12,7 @@ copy:
 	nm -u src/.libs/*.so | \
 	  awk '{print $$2}' | \
 	  egrep -v '^g_|^gtk_|^webkit|^syl_|^procmime_|^procmsg_|.*@@GLIBC_'
-	if [ -f "src/.libs/htmlview.so" ]; then \
+	if [ -f $(PLUGIN_SO) ]; then \
 	  cp -f src/.libs/*.so ~/.sylpheed-2.0/plugins; \
 	fi
 
