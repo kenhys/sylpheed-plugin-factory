@@ -1,5 +1,12 @@
 SUBDIRS = src
 
+PLUGIN_NAME = sylplugin_factory
+
+update-po:
+	xgettext src/*.[ch] -k_ -kN_ -o po/$(PLUGIN_NAME).pot
+	msgmerge po/ja.po po/$(PLUGIN_NAME).pot -o po/ja.po
+	msgfmt po/ja.po -o po/ja.mo
+
 copy:
 	nm -u src/.libs/*.so | \
 	  gawk '{print $$2}' | \
