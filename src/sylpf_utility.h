@@ -29,4 +29,7 @@ gchar *sylpf_get_rc_string(const gchar *rcname,
                            const gchar *group,
                            const gchar *key);
 
+void sylpf_load_option_rcfile(SylPluginFactoryOption *option,
+                              const gchar *rcname);
+
 #endif
