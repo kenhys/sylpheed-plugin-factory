@@ -7,6 +7,13 @@ typedef struct  _SylPluginFactoryOption SylPluginFactoryOption;
 struct _SylPluginFactoryOption {
   gchar *rcpath;
   GKeyFile *rcfile;
+
+  gboolean plugin_enabled;
+
+  GtkWidget *plugin_on;
+  GtkWidget *plugin_off;
+  GtkWidget *plugin_switch;
+  GtkTooltips *plugin_tooltip;
 };
 
 #define SYLPF_GET_RC_INTEGER(keyfile, group, key)              \
