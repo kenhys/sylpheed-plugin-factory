@@ -1,6 +1,10 @@
 
 #include <glib.h>
 #include <glib/gprintf.h>
+#include <gtk/gtk.h>
+
+#include "alertpanel.h"
+
 #include "sylpf_utility.h"
 
 gint sylpf_get_rc_integer(const gchar *rcname,
