@@ -59,3 +59,32 @@ void sylpf_load_option_rcfile(SylPluginFactoryOption *option,
 
   g_key_file_load_from_file(option->rcfile, option->rcpath, G_KEY_FILE_KEEP_COMMENTS, NULL);
 }
+
+void sylpf_update_plugin_onoff_status(SylPluginFactoryOption *option,
+                                      gboolean onoff,
+                                      const char *title,
+                                      const char *message,
+                                      const char *tooltip)
+{
+  option->plugin_enabled = onoff;
+
+  if (title && message) {
+    syl_plugin_alertpanel_message(title, message, ALERT_NOTICE);
+  }
+
+  if (onoff != FALSE) {
+    gtk_widget_hide(option->plugin_off);
+    gtk_widget_show(option->plugin_on);
+    gtk_tooltips_set_tip(option->plugin_tooltip,
+                         option->plugin_switch,
+                         tooltip,
+                         NULL);
+  } else {
+    gtk_widget_hide(option->plugin_on);
+    gtk_widget_show(option->plugin_off);
+    gtk_tooltips_set_tip(option->plugin_tooltip,
+                         option->plugin_switch,
+                         tooltip,
+                         NULL);
+  }
+}
