@@ -16,6 +16,15 @@ struct _SylPluginFactoryOption {
   GtkTooltips *plugin_tooltip;
 };
 
+#define SYLPF_DEBUG_FUNC(func) \
+  debug_print("[DEBUG][%s] %s() called.\n", SYLPF_ID, func)
+
+#define SYLPF_START_FUNC(func) \
+  debug_print("[START][%s] %s called.\n", SYLPF_ID, func)
+
+#define SYLPF_END_FUNC(func) \
+  debug_print("[END][%s] %s() called.\n", SYLPF_ID, func)
+
 #define SYLPF_GET_RC_INTEGER(keyfile, group, key)              \
   g_key_file_get_integer((keyfile), (group), (key), NULL)
 
@@ -44,5 +53,8 @@ gchar *sylpf_get_rc_string(const gchar *rcname,
 
 void sylpf_load_option_rcfile(SylPluginFactoryOption *option,
                               const gchar *rcname);
+
+void sylpf_init_gettext(const gchar *package,
+                        const gchar *dir_name);
 
 #endif
