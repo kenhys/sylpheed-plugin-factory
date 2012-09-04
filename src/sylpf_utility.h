@@ -20,11 +20,11 @@ struct _SylPluginFactoryOption {
   debug_print("[DEBUG][%s] %s() called.\n", SYLPF_ID, func)
 
 #define SYLPF_START_FUNC \
-  debug_print("[START][%s] %s called.\n", SYLPF_ID, SYLPF_FUNC_NAME)
+  debug_print("[START][%s] %s called.\n", SYLPF_ID, SYLPF_FUNC_NAME);
 
 #define SYLPF_END_FUNC \
-  debug_print("[END][%s] %s() called.\n", SYLPF_ID, SYLPF_FUNC_NAME)
-
+  debug_print("[END][%s] %s() called.\n", SYLPF_ID, SYLPF_FUNC_NAME);
+  
 #define SYLPF_GET_RC_INTEGER(keyfile, group, key)              \
   g_key_file_get_integer((keyfile), (group), (key), NULL)
 
