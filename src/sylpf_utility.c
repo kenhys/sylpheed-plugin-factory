@@ -122,3 +122,21 @@ void sypf_setup_plugin_onoff_switch(SylPluginFactoryOption *option,
   gtk_widget_show_all(option->plugin_switch);
   gtk_widget_hide(option->plugin_off);
 }
+
+
+void sylpf_init_gettext(const gchar *package,
+                        const gchar *dir_name)
+{
+  GSList *modules = NULL;
+
+#if G_OS_WIN32
+#else
+  debug_print("[DEBUG] get_startup_dir:%s\n", get_startup_dir());
+  modules = syl_plugin_get_module_list();
+  if (g_path_is_absolute(dir_name)) {
+  } else {
+    syl_init_gettext(package, dir_name);
+  }
+#endif
+}
+
