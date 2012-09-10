@@ -140,3 +140,24 @@ void sylpf_init_gettext(const gchar *package,
 #endif
 }
 
+GtkWidget *pack_widget_with_aligned_frame(GtkWidget *widget,
+                                          const gchar *frame_title)
+{
+  GtkWidget *align, *frame, *frame_align;
+  align = gtk_alignment_new(0, 0, 1, 1);
+  gtk_alignment_set_padding(GTK_ALIGNMENT(align),
+                            ALIGN_TOP, ALIGN_BOTTOM, ALIGN_LEFT, ALIGN_RIGHT);
+
+  frame = gtk_frame_new(frame_title);
+  frame_align = gtk_alignment_new(0, 0, 1, 1);
+  gtk_alignment_set_padding(GTK_ALIGNMENT(frame_align),
+                            ALIGN_TOP, ALIGN_BOTTOM, ALIGN_LEFT, ALIGN_RIGHT);
+
+  gtk_container_add(GTK_CONTAINER(frame_align), widget);
+  gtk_container_add(GTK_CONTAINER(frame), frame_align);
+  gtk_container_add(GTK_CONTAINER(align), frame);
+
+  gtk_widget_show(widget);
+
+  return align;
+}
