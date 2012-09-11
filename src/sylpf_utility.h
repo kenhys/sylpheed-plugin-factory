@@ -16,6 +16,12 @@ struct _SylPluginFactoryOption {
   GtkTooltips *plugin_tooltip;
 };
 
+#define SYLPF_ALIGN_TOP 3
+#define SYLPF_ALIGN_BOTTOM 3
+#define SYLPF_ALIGN_LEFT 6
+#define SYLPF_ALIGN_RIGHT 6
+#define SYLPF_BOX_SPACE 6
+
 #define SYLPF_DEBUG_FUNC(func) \
   debug_print("[DEBUG][%s] %s() called.\n", SYLPF_ID, func)
 
