@@ -140,8 +140,8 @@ void sylpf_init_gettext(const gchar *package,
 #endif
 }
 
-GtkWidget *pack_widget_with_aligned_frame(GtkWidget *widget,
-                                          const gchar *frame_title)
+GtkWidget *sylpf_pack_widget_with_aligned_frame(GtkWidget *widget,
+                                                const gchar *frame_title)
 {
   GtkWidget *align, *frame, *frame_align;
   align = gtk_alignment_new(0, 0, 1, 1);

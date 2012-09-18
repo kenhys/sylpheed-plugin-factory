@@ -63,7 +63,7 @@ void sylpf_load_option_rcfile(SylPluginFactoryOption *option,
 void sylpf_init_gettext(const gchar *package,
                         const gchar *dir_name);
 
-GtkWidget *pack_widget_with_aligned_frame(GtkWidget *widget,
+GtkWidget *sylpf_pack_widget_with_aligned_frame(GtkWidget *widget,
                                           const gchar *frame_title);
 
 #endif
