@@ -5,8 +5,14 @@ PLUGIN_SO = src/.libs/$(PLUGIN_NAME).so
 
 update-po:
 	xgettext src/*.[ch] -k_ -kN_ -o po/$(PLUGIN_NAME).pot
-	msgmerge po/ja.po po/$(PLUGIN_NAME).pot -o po/ja.po
-	msgfmt po/ja.po -o po/ja.mo
+	if [ ! -f po/ja.po ]; then \
+		if [ -f $(PLUGIN_NAME).pot ]; then \
+			cp po/$(PLUGIN_NAME).pot po/ja.po; \
+		fi \
+	else \
+		msgmerge po/ja.po po/$(PLUGIN_NAME).pot -o po/ja.po; \
+		msgfmt po/ja.po -o po/ja.mo; \
+	fi
 
 copy:
 	nm -u src/.libs/*.so | \
