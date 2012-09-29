@@ -28,6 +28,12 @@ struct _SylPluginFactoryOption {
 #define SYLPF_DEBUG_MSG(msg) \
   debug_print("[DEBUG][%s] %s\n", SYLPF_ID, msg)
 
+#define SYLPF_DEBUG_VAL(key, val) \
+  debug_print("[DEBUG][%s] %s:%ld (%08x)\n", SYLPF_ID, msg, val, val)
+
+#define SYLPF_DEBUG_PTR(msg, val) \
+  debug_print("[DEBUG][%s] %s:%p\n", SYLPF_ID, msg, val)
+
 #define SYLPF_START_FUNC \
   debug_print("[START][%s] %s called.\n", SYLPF_ID, SYLPF_FUNC_NAME);
 
