@@ -28,6 +28,15 @@ struct _SylPluginFactoryOption {
 #define SYLPF_DEBUG_MSG(msg) \
   debug_print("[DEBUG][%s] %s\n", SYLPF_ID, msg)
 
+#define SYLPF_WARN_MSG(msg) \
+  g_print("\e[37;43m[WARN]\e[m[%s] %s\n", SYLPF_ID, msg)
+
+#define SYLPF_INFO_MSG(msg) \
+  g_print("\e[37;42m[INFO]\e[m[%s] %s\n", SYLPF_ID, msg)
+
+#define SYLPF_ERR_MSG(msg) \
+  g_print("\e[37;41m[ERROR]\e[m[%s] %s\n", SYLPF_ID, msg)
+
 #define SYLPF_DEBUG_VAL(key, val) \
   debug_print("[DEBUG][%s] %s:%ld (%08x)\n", SYLPF_ID, msg, val, val)
 
