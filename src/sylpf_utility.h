@@ -37,8 +37,11 @@ struct _SylPluginFactoryOption {
 #define SYLPF_ERR_MSG(msg) \
   g_print("\e[37;41m[ERROR]\e[m[%s] %s\n", SYLPF_ID, msg)
 
-#define SYLPF_DEBUG_VAL(key, val) \
+#define SYLPF_DEBUG_VAL(msg, val) \
   debug_print("[DEBUG][%s] %s:%ld (%08x)\n", SYLPF_ID, msg, val, val)
+
+#define SYLPF_DEBUG_STR(msg, val) \
+  debug_print("[DEBUG][%s] %s:%s\n", SYLPF_ID, msg, val)
 
 #define SYLPF_DEBUG_PTR(msg, val) \
   debug_print("[DEBUG][%s] %s:%p\n", SYLPF_ID, msg, val)
