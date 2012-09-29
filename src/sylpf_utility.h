@@ -25,6 +25,9 @@ struct _SylPluginFactoryOption {
 #define SYLPF_DEBUG_FUNC(func) \
   debug_print("[DEBUG][%s] %s() called.\n", SYLPF_ID, func)
 
+#define SYLPF_DEBUG_MSG(msg) \
+  debug_print("[DEBUG][%s] %s\n", SYLPF_ID, msg)
+
 #define SYLPF_START_FUNC \
   debug_print("[START][%s] %s called.\n", SYLPF_ID, SYLPF_FUNC_NAME);
 
