@@ -33,3 +33,14 @@ AC_SUBST(sylpheed_build_dir)
 AC_CONFIG_FILES([Makefile
                  src/Makefile])
 AC_OUTPUT
+
+dnl Output the configuration summary
+echo ""
+echo "$PACKAGE $VERSION"
+echo ""
+echo "Sylpheed build directory : $sylpheed_build_dir"
+echo ""
+echo "The binary will be installed in $prefix/lib/sylpheed/plugins"
+echo ""
+echo "Configure finished, type 'make' to build."
+
