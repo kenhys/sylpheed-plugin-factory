@@ -7,6 +7,8 @@ AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_SRCDIR([src/sylpf_utility.h])
 AC_CONFIG_HEADERS([config.h])
 
+AM_INIT_AUTOMAKE($PACKAGE_NAME, $PACKAGE_VERSION)
+
 # Checks for programs.
 AC_PROG_AWK
 AC_PROG_CC
