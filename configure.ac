@@ -24,6 +24,12 @@ AC_PROG_LIBTOOL
 
 # Checks for library functions.
 
+sylpheed_build_dir='../../'
+AC_ARG_WITH(sylpheed_build_dir,
+	[  --with-sylpheed-build-dir=DIR    Sylpheed build directory],
+	[sylpheed_build_dir="$withval"])
+AC_SUBST(sylpheed_build_dir)
+
 AC_CONFIG_FILES([Makefile
                  src/Makefile])
 AC_OUTPUT
