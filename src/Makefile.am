@@ -9,14 +9,15 @@ sylplugin_factory_la_LDFLAGS = -module -no-undefined -avoid-version
 INCLUDES = \
 	$(GTK_CFLAGS) \
 	-I$(includedir) \
+	-I$(sylpheed_build_dir)/libsylph \
+	-I$(sylpheed_build_dir)/src \
 	-I$(top_srcdir) \
-	-I$(top_srcdir)/libsylph \
-	-I$(top_srcdir)/src
+	-I$(top_srcdir)/src \
 
 sylplugin_factory_la_LIBADD = \
 	$(GTK_LIBS) \
-        $(top_builddir)/src/libsylpheed-plugin-0.la \
-	$(top_builddir)/libsylph/libsylph-0.la
+	$(sylpheed_build_dir)/src/libsylpheed-plugin-0.la \
+	$(sylpheed_build_dir)/libsylph/libsylph-0.la
 
 install:
 install-plugin: install-am
