@@ -4,7 +4,12 @@ private_build.h
 *.o
 *.la
 *.lo
+config.*
 .compile
 .deps
 .libs
 Makefile
+configure
+config/*
+m4/*
+autom4te.*
