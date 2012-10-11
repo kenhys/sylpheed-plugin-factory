@@ -12,7 +12,7 @@ INCLUDES = \
 	-I$(sylpheed_build_dir)/libsylph \
 	-I$(sylpheed_build_dir)/src \
 	-I$(top_srcdir) \
-	-I$(top_srcdir)/src \
+	-I$(top_srcdir)/src
 
 sylplugin_factory_la_LIBADD = \
 	$(GTK_LIBS) \
