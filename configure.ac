@@ -17,6 +17,12 @@ AC_PROG_MAKE_SET
 AC_PROG_LIBTOOL
 
 # Checks for libraries.
+AM_PATH_GLIB_2_0(2.8.0,, AC_MSG_ERROR(Test for GLib failed. See the 'INSTALL' for help.))
+AM_PATH_GTK_2_0(2.8.0,, AC_MSG_ERROR(Test for Gtk failed. See the 'INSTALL' for help.))
+
+AC_SUBST(GTK_CFLAGS)
+AC_SUBST(GTK_LIBS)
+
 
 # Checks for header files.
 
