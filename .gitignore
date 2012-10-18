@@ -11,5 +11,6 @@ config.*
 Makefile
 configure
 config/*
-m4/*
+m4/lt*
+m4/libtool*
 autom4te.*
