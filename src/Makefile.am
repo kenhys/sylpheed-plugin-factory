@@ -1,4 +1,8 @@
+if WITH_SYLPHEED
+#libdir = $(sylpheed_build_dir)/plugin
+else
 libdir = $(plugindir)
+endif
 
 lib_LTLIBRARIES = sylplugin_factory.la
 
