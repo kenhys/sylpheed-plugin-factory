@@ -1,9 +1,3 @@
-if WITH_SYLPHEED
-#libdir = $(sylpheed_build_dir)/plugin
-else
-libdir = $(plugindir)
-endif
-
 lib_LTLIBRARIES = sylplugin_factory.la
 
 sylplugin_factory_la_SOURCES = sylpf_utility.c sylpf_utility.h
