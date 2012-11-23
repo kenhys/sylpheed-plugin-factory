@@ -22,6 +22,7 @@ AM_PATH_GTK_2_0(2.8.0,, AC_MSG_ERROR(Test for Gtk failed. See the 'INSTALL' for 
 
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
+AC_DEFINE(BUILD_SYLPLUGIN_FACTORY_STANDALONE)
 
 
 # Checks for header files.
