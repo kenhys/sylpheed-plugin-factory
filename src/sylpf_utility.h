@@ -87,4 +87,9 @@ void sylpf_init_gettext(const gchar *package,
 GtkWidget *sylpf_pack_widget_with_aligned_frame(GtkWidget *widget,
                                           const gchar *frame_title);
 
+void sylpf_pack_confirm_area(GtkWidget *parent,
+                             GCallback ok_cb,
+                             GCallback cancel_cb,
+                             gpointer data);
+
 #endif

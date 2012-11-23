@@ -168,3 +168,37 @@ GtkWidget *sylpf_pack_widget_with_aligned_frame(GtkWidget *widget,
 
   return align;
 }
+
+void sylpf_pack_confirm_area(GtkWidget *parent,
+                                   GCallback ok_cb,
+                                   GCallback cancel_cb,
+                                   gpointer data)
+{
+  GtkWidget *confirm_area;
+  GtkWidget *ok_btn;
+  GtkWidget *cancel_btn;
+
+  confirm_area = gtk_hbutton_box_new();
+  gtk_button_box_set_layout(GTK_BUTTON_BOX(confirm_area), GTK_BUTTONBOX_END);
+  gtk_box_set_spacing(GTK_BOX(confirm_area), 6);
+
+  ok_btn = gtk_button_new_from_stock(GTK_STOCK_OK);
+  GTK_WIDGET_SET_FLAGS(ok_btn, GTK_CAN_DEFAULT);
+  gtk_box_pack_start(GTK_BOX(confirm_area), ok_btn, FALSE, FALSE, 0);
+  gtk_widget_show(ok_btn);
+
+  cancel_btn = gtk_button_new_from_stock(GTK_STOCK_CANCEL);
+  GTK_WIDGET_SET_FLAGS(cancel_btn, GTK_CAN_DEFAULT);
+  gtk_box_pack_start(GTK_BOX(confirm_area), cancel_btn, FALSE, FALSE, 0);
+  gtk_widget_show(cancel_btn);
+
+  gtk_widget_show(confirm_area);
+
+  gtk_box_pack_end(GTK_BOX(parent), confirm_area, FALSE, FALSE, 0);
+  gtk_widget_grab_default(ok_btn);
+
+  g_signal_connect(G_OBJECT(ok_btn), "clicked",
+                   G_CALLBACK(ok_cb), data);
+  g_signal_connect(G_OBJECT(cancel_btn), "clicked",
+                   G_CALLBACK(cancel_cb), data);
+}
