@@ -23,7 +23,7 @@ struct _SylPluginFactoryOption {
 #define SYLPF_BOX_SPACE 6
 
 #define SYLPF_DEBUG_FUNC(func) \
-  debug_print("[DEBUG][%s] %s() called.\n", SYLPF_ID, func)
+  debug_print("[DEBUG][%s] %s() called.\n", SYLPF_ID, __func__)
 
 #define SYLPF_DEBUG_MSG(msg) \
   debug_print("[DEBUG][%s] %s\n", SYLPF_ID, msg)
@@ -47,10 +47,10 @@ struct _SylPluginFactoryOption {
   debug_print("[DEBUG][%s] %s:%p\n", SYLPF_ID, msg, val)
 
 #define SYLPF_START_FUNC \
-  debug_print("[START][%s] %s called.\n", SYLPF_ID, SYLPF_FUNC_NAME);
+  debug_print("[START][%s] %s called.\n", SYLPF_ID, __func__);
 
 #define SYLPF_END_FUNC \
-  debug_print("[END][%s] %s() called.\n", SYLPF_ID, SYLPF_FUNC_NAME);
+  debug_print("[END][%s] %s() called.\n", SYLPF_ID, __func__);
   
 #define SYLPF_GET_RC_INTEGER(keyfile, group, key)              \
   g_key_file_get_integer((keyfile), (group), (key), NULL)
