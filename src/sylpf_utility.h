@@ -64,6 +64,9 @@ struct _SylPluginFactoryOption {
 #define SYLPF_GET_RC_STRING(keyfile, group, key) \
   g_key_file_get_string((keyfile), (group), (key), NULL)
 
+#define SYLPF_SET_RC_STRING(keyfile, group, key, value) \
+  g_key_file_set_string((keyfile), (group), (key), (value))
+
 #define SYLPF_GET_RC_SHOW_ATTACH_TAB \
   sylpf_get_rc_integer(SYLPF_SYLPHEEDRC, "Common", "show_attach_tab")
 
