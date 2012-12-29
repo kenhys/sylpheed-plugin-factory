@@ -22,6 +22,8 @@ struct _SylPluginFactoryOption {
 #define SYLPF_ALIGN_RIGHT 6
 #define SYLPF_BOX_SPACE 6
 
+#define SYLPF_OPTION_P (SylPluginFactoryOption*)&SYLPF_OPTION
+
 #define SYLPF_DEBUG_FUNC(func) \
   debug_print("[DEBUG][%s] %s() called.\n", SYLPF_ID, __func__)
 
