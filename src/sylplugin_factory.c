@@ -56,7 +56,7 @@ guint sylpf_init_logger(const gchar *log_domain,
 {
   guint handler_id;
 
-  if (!log_func) {
+  if (log_func) {
     handler_id = g_log_set_handler(log_domain,
                                    log_levels,
                                    log_func,
