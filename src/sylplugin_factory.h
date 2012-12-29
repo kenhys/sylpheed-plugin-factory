@@ -43,16 +43,16 @@ struct _SylPluginFactoryOption {
   debug_print("[DEBUG][%s] %s:%ld (%08x)\n", SYLPF_ID, msg, val, val)
 
 #define SYLPF_DEBUG_STR(msg, val) \
-  debug_print("[DEBUG][%s] %s:%s\n", SYLPF_ID, msg, val)
+  g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[%s] %s:%d", __func__, msg, val)
 
 #define SYLPF_DEBUG_PTR(msg, val) \
-  debug_print("[DEBUG][%s] %s:%p\n", SYLPF_ID, msg, val)
+  g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[%s] %s:%p", __func__, msg, val)
 
 #define SYLPF_START_FUNC \
-  debug_print("[START][%s] %s called.\n", SYLPF_ID, __func__);
+  g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[START] %s called.", __func__);
 
 #define SYLPF_END_FUNC \
-  debug_print("[END][%s] %s() called.\n", SYLPF_ID, __func__);
+  g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[END] %s called.", __func__);
   
 #define SYLPF_GET_RC_INTEGER(keyfile, group, key)              \
   g_key_file_get_integer((keyfile), (group), (key), NULL)
