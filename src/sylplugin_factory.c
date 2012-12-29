@@ -7,6 +7,33 @@
 
 #include "sylplugin_factory.h"
 
+void sylpf_log_handler(const gchar *log_domain,
+                       GLogLevelFlags log_level,
+                       const gchar *message,
+                       gpointer user_data)
+{
+}
+
+gint sylpf_init_logger(const gchar *log_domain,
+                       GLogLevelFlags log_levels,
+                       GLogFunc log_func,
+                       gpointer user_data)
+{
+  if (log_func) {
+    g_log_set_handler(log_domain,
+                      log_levels,
+                      log_func,
+                      user_data);
+  } else {
+    g_log_set_handler(log_domain,
+                      log_levels,
+                      sylpf_log_handler,
+                      user_data);
+  }
+}
+
+
+
 gint sylpf_get_rc_integer(const gchar *rcname,
                           const gchar *group,
                           const gchar *key)
