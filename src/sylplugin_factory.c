@@ -8,6 +8,7 @@
 #include "sylplugin_factory.h"
 
 static FILE *log_file;
+static gchar log_date_buf[64];
 
 #if !GLIB_CHECK_VERSION(2, 32, 0)
 static GStaticMutex log_mutex;
@@ -20,30 +21,42 @@ void sylpf_log_handler(const gchar *log_domain,
                        const gchar *message,
                        gpointer user_data)
 {
+  time_t now;
+  struct tm *local;
 
 #if !GLIB_CHECK_VERSION(2, 32, 0)
 #else
   g_mutex_lock(&log_mutex);
 #endif
   if (log_file) {
+    now = time(NULL);
+    local = localtime(&now);
+    strftime(log_date_buf, 64, "%Y-%m-%d %H:%M:%S", local);
+
     switch (log_level) {
     case G_LOG_LEVEL_WARNING:
-      g_fprintf(log_file, "[%s][] %s\n", log_domain, message);
+      g_fprintf(log_file, "%s [%s][] %s\n",
+                log_date_buf, log_domain, message);
       break;
     case G_LOG_LEVEL_DEBUG:
-      g_fprintf(log_file, "[%s][DEBUG] %s\n", log_domain, message);
+      g_fprintf(log_file, "%s [%s][DEBUG] %s\n",
+                log_date_buf, log_domain, message);
       break;
     case G_LOG_LEVEL_ERROR:
-      g_fprintf(log_file, "[%s][ERROR] %s\n", log_domain, message);
+      g_fprintf(log_file, "%s [%s][ERROR] %s\n",
+                log_date_buf, log_domain, message);
       break;
     case G_LOG_LEVEL_INFO:
-      g_fprintf(log_file, "[%s][INFO] %s\n", log_domain, message);
+      g_fprintf(log_file, "%s [%s][INFO] %s\n",
+                log_date_buf, log_domain, message);
       break;
     case G_LOG_LEVEL_CRITICAL:
-      g_fprintf(log_file, "[%s][CRITICAL] %s\n", log_domain, message);
+      g_fprintf(log_file, "%s [%s][CRITICAL] %s\n",
+                log_date_buf, log_domain, message);
       break;
     default:
-      g_fprintf(log_file, "[%s][NORMAL] %s\n", log_domain, message);
+      g_fprintf(log_file, "%s [%s][NORMAL] %s\n",
+                log_date_buf, log_domain, message);
       break;
     }
   }
