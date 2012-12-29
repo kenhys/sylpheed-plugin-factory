@@ -12,6 +12,40 @@ void sylpf_log_handler(const gchar *log_domain,
                        const gchar *message,
                        gpointer user_data)
 {
+  gchar *log_path;
+  FILE *fp;
+
+  log_path = g_strconcat(get_rc_dir(),
+                         G_DIR_SEPARATOR_S,
+                         log_domain,
+                         ".log",
+                         NULL);
+
+  fp = g_fopen(log_path, "a+");
+  if (fp) {
+    switch (log_level) {
+    case G_LOG_LEVEL_WARNING:
+      g_fprintf(fp, "[%s][] %s\n", log_domain, message);
+      break;
+    case G_LOG_LEVEL_DEBUG:
+      g_fprintf(fp, "[%s][DEBUG] %s\n", log_domain, message);
+      break;
+    case G_LOG_LEVEL_ERROR:
+      g_fprintf(fp, "[%s][ERROR] %s\n", log_domain, message);
+      break;
+    case G_LOG_LEVEL_INFO:
+      g_fprintf(fp, "[%s][INFO] %s\n", log_domain, message);
+      break;
+    case G_LOG_LEVEL_CRITICAL:
+      g_fprintf(fp, "[%s][CRITICAL] %s\n", log_domain, message);
+      break;
+    default:
+      g_fprintf(fp, "[%s][NORMAL] %s\n", log_domain, message);
+      break;
+    }
+    fclose(fp);
+  }
+  g_free(log_path);
 }
 
 
