@@ -1,6 +1,6 @@
 lib_LTLIBRARIES = sylplugin_factory.la
 
-sylplugin_factory_la_SOURCES = sylpf_utility.c sylpf_utility.h
+sylplugin_factory_la_SOURCES = sylplugin_factory.c sylplugin_factory.h
 sylplugin_factory_la_LDFLAGS = -module -no-undefined -avoid-version
 
 
