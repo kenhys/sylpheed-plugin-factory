@@ -75,10 +75,10 @@ struct _SylPluginFactoryOption {
 #define SYLPF_GET_RC_MESSAGE_FONT_NAME \
   sylpf_get_rc_string(SYLPF_SYLPHEEDRC, "Common", "message_font_name")
 
-gint sylpf_init_logger(const gchar *log_domain,
-                       GLogLevelFlags log_levels,
-                       GLogFunc log_func,
-                       gpointer user_data);
+guint sylpf_init_logger(const gchar *log_domain,
+                        GLogLevelFlags log_levels,
+                        GLogFunc log_func,
+                        gpointer user_data);
 
 gint sylpf_get_rc_integer(const gchar *rcname,
                           const gchar *group,
