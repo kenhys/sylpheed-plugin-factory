@@ -59,6 +59,7 @@ void sylpf_log_handler(const gchar *log_domain,
                 log_date_buf, log_domain, message);
       break;
     }
+    fflush(log_file);
   }
 #if !GLIB_CHECK_VERSION(2, 32, 0)
 #else
