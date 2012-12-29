@@ -14,22 +14,26 @@ void sylpf_log_handler(const gchar *log_domain,
 {
 }
 
-gint sylpf_init_logger(const gchar *log_domain,
-                       GLogLevelFlags log_levels,
-                       GLogFunc log_func,
-                       gpointer user_data)
+
+guint sylpf_init_logger(const gchar *log_domain,
+                        GLogLevelFlags log_levels,
+                        GLogFunc log_func,
+                        gpointer user_data)
 {
-  if (log_func) {
-    g_log_set_handler(log_domain,
-                      log_levels,
-                      log_func,
-                      user_data);
+  guint handler_id;
+
+  if (!log_func) {
+    handler_id = g_log_set_handler(log_domain,
+                                   log_levels,
+                                   log_func,
+                                   user_data);
   } else {
-    g_log_set_handler(log_domain,
-                      log_levels,
-                      sylpf_log_handler,
-                      user_data);
+    handler_id = g_log_set_handler(log_domain,
+                                   log_levels,
+                                   sylpf_log_handler,
+                                   user_data);
   }
+  return handler_id;
 }
 
 
