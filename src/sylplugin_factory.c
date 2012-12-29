@@ -7,45 +7,50 @@
 
 #include "sylplugin_factory.h"
 
+static FILE *log_file;
+
+#if !GLIB_CHECK_VERSION(2, 32, 0)
+static GStaticMutex log_mutex;
+#else
+static GMutex log_mutex;
+#endif
+
 void sylpf_log_handler(const gchar *log_domain,
                        GLogLevelFlags log_level,
                        const gchar *message,
                        gpointer user_data)
 {
-  gchar *log_path;
-  FILE *fp;
 
-  log_path = g_strconcat(get_rc_dir(),
-                         G_DIR_SEPARATOR_S,
-                         log_domain,
-                         ".log",
-                         NULL);
-
-  fp = g_fopen(log_path, "a+");
-  if (fp) {
+#if !GLIB_CHECK_VERSION(2, 32, 0)
+#else
+  g_mutex_lock(&log_mutex);
+#endif
+  if (log_file) {
     switch (log_level) {
     case G_LOG_LEVEL_WARNING:
-      g_fprintf(fp, "[%s][] %s\n", log_domain, message);
+      g_fprintf(log_file, "[%s][] %s\n", log_domain, message);
       break;
     case G_LOG_LEVEL_DEBUG:
-      g_fprintf(fp, "[%s][DEBUG] %s\n", log_domain, message);
+      g_fprintf(log_file, "[%s][DEBUG] %s\n", log_domain, message);
       break;
     case G_LOG_LEVEL_ERROR:
-      g_fprintf(fp, "[%s][ERROR] %s\n", log_domain, message);
+      g_fprintf(log_file, "[%s][ERROR] %s\n", log_domain, message);
       break;
     case G_LOG_LEVEL_INFO:
-      g_fprintf(fp, "[%s][INFO] %s\n", log_domain, message);
+      g_fprintf(log_file, "[%s][INFO] %s\n", log_domain, message);
       break;
     case G_LOG_LEVEL_CRITICAL:
-      g_fprintf(fp, "[%s][CRITICAL] %s\n", log_domain, message);
+      g_fprintf(log_file, "[%s][CRITICAL] %s\n", log_domain, message);
       break;
     default:
-      g_fprintf(fp, "[%s][NORMAL] %s\n", log_domain, message);
+      g_fprintf(log_file, "[%s][NORMAL] %s\n", log_domain, message);
       break;
     }
-    fclose(fp);
   }
-  g_free(log_path);
+#if !GLIB_CHECK_VERSION(2, 32, 0)
+#else
+  g_mutex_unlock(&log_mutex);
+#endif
 }
 
 
@@ -55,6 +60,21 @@ guint sylpf_init_logger(const gchar *log_domain,
                         gpointer user_data)
 {
   guint handler_id;
+  gchar *log_path;
+
+  log_path = g_strconcat(get_rc_dir(),
+                         G_DIR_SEPARATOR_S,
+                         log_domain,
+                         ".log",
+                         NULL);
+
+#if !GLIB_CHECK_VERSION(2, 32, 0)
+  log_mutex = G_STATIC_MUTEX_INIT;
+#else
+  g_mutex_init(&log_mutex);
+#endif
+  log_file = g_fopen(log_path, "a+");
+  g_free(log_path);
 
   if (log_func) {
     handler_id = g_log_set_handler(log_domain,
