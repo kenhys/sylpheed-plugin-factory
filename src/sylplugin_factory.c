@@ -5,7 +5,7 @@
 
 #include "alertpanel.h"
 
-#include "sylpf_utility.h"
+#include "sylplugin_factory.h"
 
 gint sylpf_get_rc_integer(const gchar *rcname,
                           const gchar *group,
