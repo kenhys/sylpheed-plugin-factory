@@ -40,7 +40,7 @@ struct _SylPluginFactoryOption {
   g_print("\e[37;41m[ERROR]\e[m[%s] %s\n", SYLPF_ID, msg)
 
 #define SYLPF_DEBUG_VAL(msg, val) \
-  debug_print("[DEBUG][%s] %s:%ld (%08x)\n", SYLPF_ID, msg, val, val)
+  g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[%s] %s:%ld (%08x)\n", __func__, msg, val, val)
 
 #define SYLPF_DEBUG_STR(msg, val) \
   g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[%s] %s:%d", __func__, msg, val)
