@@ -43,7 +43,7 @@ struct _SylPluginFactoryOption {
   g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[%s] %s:%ld (%08x)\n", __func__, msg, val, val)
 
 #define SYLPF_DEBUG_STR(msg, val) \
-  g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[%s] %s:%d", __func__, msg, val)
+  g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[%s] %s:%s", __func__, msg, val)
 
 #define SYLPF_DEBUG_PTR(msg, val) \
   g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[%s] %s:%p", __func__, msg, val)
