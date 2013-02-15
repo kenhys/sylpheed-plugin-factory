@@ -72,10 +72,10 @@ struct _SylPluginFactoryOption {
   g_key_file_set_string((keyfile), (group), (key), (value))
 
 #define SYLPF_GET_RC_SHOW_ATTACH_TAB \
-  sylpf_get_rc_integer(SYLPF_SYLPHEEDRC, "Common", "show_attach_tab")
+  sylpf_get_rc_integer(SYLPF_SYLPHEED_RC, "Common", "show_attach_tab")
 
 #define SYLPF_GET_RC_MESSAGE_FONT_NAME \
-  sylpf_get_rc_string(SYLPF_SYLPHEEDRC, "Common", "message_font_name")
+  sylpf_get_rc_string(SYLPF_SYLPHEED_RC, "Common", "message_font_name")
 
 guint sylpf_init_logger(const gchar *log_domain,
                         GLogLevelFlags log_levels,
