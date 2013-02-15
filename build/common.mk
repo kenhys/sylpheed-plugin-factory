@@ -16,3 +16,9 @@ copy:
 	if [ -f $(PLUGIN_SO) ]; then \
 		cp -f src/.libs/*.so ~/.sylpheed-2.0/plugins; \
 	fi
+
+copying:
+	echo "const gchar *copyright =\"" > src/COPYING.h
+	cat COPYING >> src/COPYING.h
+	echo "\";" >> src/COPYING.h
+	sed -i 's/"AS IS"/\\"AS IS\\"/g' src/COPYING.h
