@@ -21,7 +21,7 @@ copying:
 	cat COPYING > src/tmp.h
 	sed -i -e 's/"AS IS"/\\"AS IS\\"/g' src/tmp.h
 	sed -i -e 's/^/"/g' src/tmp.h
-	sed -i -e 's/$$/"/g' src/tmp.h
+	sed -i -e 's/$$/\\n"/g' src/tmp.h
 	echo "const gchar *copyright =\"\"" > src/copying.h
 	cat src/tmp.h >> src/copying.h
 	echo "\"\";" >> src/copying.h
