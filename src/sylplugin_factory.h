@@ -1,7 +1,7 @@
 #ifndef __SYLPF_UTILITY_H_INCLUDED__
 #define __SYLPF_UTILITY_H_INCLUDED__
 
-#define SYLPF_SYLPHEEDRC "sylpheedrc"
+#define SYLPF_SYLPHEED_RC "sylpheedrc"
 #define SYLPF_PLUGIN_RC "mypluginrc"
 
 
