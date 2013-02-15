@@ -18,7 +18,10 @@ copy:
 	fi
 
 copying:
-	echo "const gchar *copyright =\"" > src/COPYING.h
-	cat COPYING >> src/COPYING.h
-	echo "\";" >> src/COPYING.h
-	sed -i 's/"AS IS"/\\"AS IS\\"/g' src/COPYING.h
+	cat COPYING > src/tmp.h
+	sed -i -e 's/"AS IS"/\\"AS IS\\"/g' src/tmp.h
+	sed -i -e 's/^/"/g' src/tmp.h
+	sed -i -e 's/$$/"/g' src/tmp.h
+	echo "const gchar *copyright =\"\"" > src/copying.h
+	cat src/tmp.h >> src/copying.h
+	echo "\"\";" >> src/copying.h
