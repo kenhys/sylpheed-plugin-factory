@@ -56,6 +56,12 @@ struct _SylPluginFactoryOption {
 #define SYLPF_END_FUNC \
   g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[END] %s called.", __func__);
   
+#define SYLPF_RETURN \
+  SYLPF_END_FUNC;
+
+#define SYLPF_RETURN_VALUE(arg) \
+  SYLPF_END_FUNC; return (arg);
+
 #define SYLPF_GET_RC_INTEGER(keyfile, group, key)              \
   g_key_file_get_integer((keyfile), (group), (key), NULL)
 
