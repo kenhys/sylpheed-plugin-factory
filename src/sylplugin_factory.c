@@ -228,7 +228,7 @@ void sylpf_init_gettext(const gchar *package,
 {
   GSList *modules = NULL;
 
-#if G_OS_WIN32
+#ifdef G_OS_WIN32
 #else
   debug_print("[DEBUG] get_startup_dir:%s\n", get_startup_dir());
   modules = syl_plugin_get_module_list();
