@@ -4,6 +4,7 @@
 #include <gtk/gtk.h>
 
 #include "alertpanel.h"
+#include "mainwindow.h"
 
 #include "sylplugin_factory.h"
 
@@ -301,3 +302,26 @@ void sylpf_pack_confirm_area(GtkWidget *parent,
   g_signal_connect(G_OBJECT(cancel_btn), "clicked",
                    G_CALLBACK(cancel_cb), data);
 }
+
+void sylpf_init_preference_dialog_size(GtkWidget *dialog)
+{
+  gpointer mainwin;
+  GtkWidget *window;
+  gint width, height;
+
+  mainwin = syl_plugin_main_window_get();
+  window = ((MainWindow*)mainwin)->window;
+  
+  gtk_window_get_size(GTK_WINDOW(window),
+                      &width,
+                      &height);
+
+  height *= 0.8;
+  if (width * 0.8 > 400) {
+    width = 400;
+  }
+
+  gtk_widget_set_size_request(dialog,
+                              width, height * 0.8);
+}
+
