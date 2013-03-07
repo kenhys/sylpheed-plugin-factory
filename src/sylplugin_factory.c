@@ -325,3 +325,28 @@ void sylpf_init_preference_dialog_size(GtkWidget *dialog)
                               width, height * 0.8);
 }
 
+gchar *sylpf_get_text_from_message_partial(MsgInfo *msginfo, ContentType content)
+{
+  gchar *buf;
+  MimeInfo *mimeinfo;
+  FILE *msgfile, *partial, *input;
+  
+  SYLPF_START_FUNC;
+
+  mimeinfo = procmime_scan_message(msginfo);
+  msgfile = procmsg_open_message(msginfo);
+
+  buf = NULL;
+  partialpartial = mimeinfo;
+  while (partial && partial->mime_type != MIME_TEXT) {
+    partial = procmime_mimeinfo_next(partial);
+  }
+  if (partial && partial->mime_type == MIME_TEXT) {
+    input = procmime_get_text_content(partial, msg_file, NULL);
+
+    buf = calloc(partial->size+1, 1);
+
+    fread(buf, partial->size, 1, input);
+  }
+  SYLPF_RETURN_VALUE(buf);
+}

@@ -113,4 +113,7 @@ void sylpf_pack_confirm_area(GtkWidget *parent,
                              GCallback cancel_cb,
                              gpointer data);
 
+gchar *sylpf_get_text_from_message_partial(MsgInfo *msginfo,
+                                           ContentType content);
+
 #endif
