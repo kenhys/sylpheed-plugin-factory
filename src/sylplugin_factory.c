@@ -357,6 +357,8 @@ gchar *sylpf_format_diff2html_text(gchar const *text)
   gchar **lines;
   gchar *line;
   
+  SYLPF_START_FUNC;
+
   buf = "<html>\n"
     "<style type=\"text/css\">\n"
     "<!--\n"
@@ -370,27 +372,34 @@ gchar *sylpf_format_diff2html_text(gchar const *text)
     "<body>\n"
     "<pre>\n";
   
-  lines = g_strsplit(text, "\r\n", 1024);
+  lines = g_strsplit(text, "\n", 1024);
   if (!lines) {
-    return g_strconcat(buf, text, "</pre></body></html>");
+    return g_strconcat(buf, text, "</pre></body></html>", NULL);
   }
 
-  while (lines) {
+  while (line) {
     line = *lines;
 
-    if (g_strstr(line, "===")) {
-      buf = sylpf_append_code_markup(buf, line, "yellow");
-    } else if (g_strstr(line, "---")) {
-      buf = sylpf_append_code_markup(buf, line, "red");
-    } else if (g_strstr(line, "+++")) {
-      buf = sylpf_append_code_markup(buf, line, "green");
-    } else if (g_strstr(line, "@@")) {
-      buf = sylpf_append_code_markup(buf, line, "snow");
-    } else {
-      buf = sylpf_append_code_markup(buf, line, NULL);
+    if (line) {
+      SYLPF_DEBUG_STR("line", line);
+
+      if (g_strstr_len(line, -1, "===")) {
+        buf = sylpf_append_code_markup(buf, line, "yellow");
+      } else if (g_strstr_len(line, -1, "---")) {
+        buf = sylpf_append_code_markup(buf, line, "red");
+      } else if (g_strstr_len(line, -1, "+++")) {
+        buf = sylpf_append_code_markup(buf, line, "green");
+      } else if (g_strstr_len(line, -1, "@@")) {
+        buf = sylpf_append_code_markup(buf, line, "snow");
+      } else {
+        buf = sylpf_append_code_markup(buf, line, NULL);
+      }
     }
+    lines++;
   }
-  return buf;
+  buf = g_strconcat(buf, "</pre></body></html>", NULL);
+
+  SYLPF_RETURN_VALUE(buf);
 }
 
 gchar *sylpf_append_code_markup(gchar *text,
