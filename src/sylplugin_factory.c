@@ -391,6 +391,10 @@ gchar *sylpf_format_diff2html_text(gchar const *text)
         buf = sylpf_append_code_markup(buf, line, "green");
       } else if (g_strstr_len(line, -1, "@@")) {
         buf = sylpf_append_code_markup(buf, line, "snow");
+      } else if (g_strstr_len(line, 1, "-")) {
+        buf = sylpf_append_code_markup(buf, line, "red");
+      } else if (g_strstr_len(line, 1, "+")) {
+        buf = sylpf_append_code_markup(buf, line, "green");
       } else {
         buf = sylpf_append_code_markup(buf, line, NULL);
       }
