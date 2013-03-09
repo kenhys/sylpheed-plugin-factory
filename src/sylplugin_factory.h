@@ -4,6 +4,7 @@
 #define SYLPF_SYLPHEED_RC "sylpheedrc"
 #define SYLPF_PLUGIN_RC "mypluginrc"
 
+#define SYLPF_ID PACKAGE_NAME
 
 typedef struct  _SylPluginFactoryOption SylPluginFactoryOption;
 struct _SylPluginFactoryOption {
