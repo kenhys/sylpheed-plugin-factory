@@ -116,4 +116,9 @@ void sylpf_pack_confirm_area(GtkWidget *parent,
 gchar *sylpf_get_text_from_message_partial(MsgInfo *msginfo,
                                            ContentType content);
 
+gchar *sylpf_append_code_markup(gchar *text,
+                                gchar *piece,
+                                const gchar *klass);
+
+
 #endif

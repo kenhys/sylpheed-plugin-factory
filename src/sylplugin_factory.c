@@ -350,3 +350,73 @@ gchar *sylpf_get_text_from_message_partial(MsgInfo *msginfo, ContentType content
   }
   SYLPF_RETURN_VALUE(buf);
 }
+
+gchar *sylpf_format_diff2html_text(gchar const *text)
+{
+  gchar *buf;
+  gchar **lines;
+  gchar *line;
+  
+  buf = "<html>\n"
+    "<style type=\"text/css\">\n"
+    "<!--\n"
+    "div.yellow { background: #ffe; font-family: monospace; }\n"
+    "div.red { background: #fed; font-family: monospace; }\n"
+    "div.green { background: #efe; font-family: monospace; }\n"
+    "div.snow { background: #f5f5fa; font-family: monospace; }\n"
+    "pre {padding: 0; margin: 0;}\n"
+    "-->\n"
+    "</style>\n"
+    "<body>\n"
+    "<pre>\n";
+  
+  lines = g_strsplit(text, "\r\n", 1024);
+  if (!lines) {
+    return g_strconcat(buf, text, "</pre></body></html>");
+  }
+
+  while (lines) {
+    line = *lines;
+
+    if (g_strstr(line, "===")) {
+      buf = sylpf_append_code_markup(buf, line, "yellow");
+    } else if (g_strstr(line, "---")) {
+      buf = sylpf_append_code_markup(buf, line, "red");
+    } else if (g_strstr(line, "+++")) {
+      buf = sylpf_append_code_markup(buf, line, "green");
+    } else if (g_strstr(line, "@@")) {
+      buf = sylpf_append_code_markup(buf, line, "snow");
+    } else {
+      buf = sylpf_append_code_markup(buf, line, NULL);
+    }
+  }
+  return buf;
+}
+
+gchar *sylpf_append_code_markup(gchar *text,
+                                gchar *piece,
+                                const gchar *klass)
+{
+  gchar *markup;
+
+  SYLPF_START_FUNC;
+
+  if (klass) {
+    markup = g_strdup_printf("%s<div class='%s'><pre>%s</pre></div>",
+                             text,
+                             klass,
+                             piece);
+  } else {
+    markup = g_strdup_printf("%s<div><pre>%s</pre></div>",
+                             text,
+                             piece);
+  }
+
+  if (text) {
+    g_free(text);
+  }
+
+  SYLPF_RETURN_VALUE(markup);
+}
+
+
