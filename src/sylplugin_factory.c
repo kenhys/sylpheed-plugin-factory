@@ -328,8 +328,8 @@ void sylpf_init_preference_dialog_size(GtkWidget *dialog)
 gchar *sylpf_get_text_from_message_partial(MsgInfo *msginfo, ContentType content)
 {
   gchar *buf;
-  MimeInfo *mimeinfo;
-  FILE *msgfile, *partial, *input;
+  MimeInfo *mimeinfo, *partial;
+  FILE *msgfile, *input;
   
   SYLPF_START_FUNC;
 
@@ -337,12 +337,12 @@ gchar *sylpf_get_text_from_message_partial(MsgInfo *msginfo, ContentType content
   msgfile = procmsg_open_message(msginfo);
 
   buf = NULL;
-  partialpartial = mimeinfo;
+  partial = mimeinfo;
   while (partial && partial->mime_type != MIME_TEXT) {
     partial = procmime_mimeinfo_next(partial);
   }
   if (partial && partial->mime_type == MIME_TEXT) {
-    input = procmime_get_text_content(partial, msg_file, NULL);
+    input = procmime_get_text_content(partial, msgfile, NULL);
 
     buf = calloc(partial->size+1, 1);
 
