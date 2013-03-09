@@ -412,10 +412,6 @@ gchar *sylpf_append_code_markup(gchar *text,
                              piece);
   }
 
-  if (text) {
-    g_free(text);
-  }
-
   SYLPF_RETURN_VALUE(markup);
 }
 
