@@ -123,5 +123,6 @@ gchar *sylpf_append_code_markup(gchar *text,
                                 gchar *piece,
                                 const gchar *klass);
 
+void sylpf_init_preference_dialog_size(GtkWidget *dialog);
 
 #endif
