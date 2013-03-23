@@ -263,7 +263,6 @@ GtkWidget *sylpf_pack_widget_with_aligned_frame(GtkWidget *widget,
   gtk_container_add(GTK_CONTAINER(frame), frame_align);
   gtk_container_add(GTK_CONTAINER(align), frame);
 
-  gtk_container_add(GTK_CONTAINER(frame_align), widget);
   gtk_widget_show(widget);
 
   return align;
