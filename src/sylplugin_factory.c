@@ -336,7 +336,8 @@ gchar *sylpf_get_text_from_message_partial(MsgInfo *msginfo, ContentType content
   gchar *buf;
   MimeInfo *mimeinfo, *partial;
   FILE *msgfile, *input;
-  
+  size_t n_reads;
+
   SYLPF_START_FUNC;
 
   mimeinfo = procmime_scan_message(msginfo);
@@ -352,7 +353,7 @@ gchar *sylpf_get_text_from_message_partial(MsgInfo *msginfo, ContentType content
 
     buf = calloc(partial->size+1, 1);
 
-    fread(buf, partial->size, 1, input);
+    n_reads = fread(buf, partial->size, 1, input);
   }
   SYLPF_RETURN_VALUE(buf);
 }
