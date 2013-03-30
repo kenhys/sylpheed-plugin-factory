@@ -385,8 +385,9 @@ gchar *sylpf_format_diff2html_text(gchar const *text)
     return g_strconcat(buf, text, "</pre></body></html>", NULL);
   }
 
+  line = *lines;
+
   while (line) {
-    line = *lines;
 
     if (line) {
       SYLPF_DEBUG_STR("line", line);
@@ -408,6 +409,8 @@ gchar *sylpf_format_diff2html_text(gchar const *text)
       }
     }
     lines++;
+
+    line = *lines;
   }
   buf = g_strconcat(buf, "</pre></body></html>", NULL);
 
