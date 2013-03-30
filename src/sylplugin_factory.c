@@ -5,6 +5,7 @@
 
 #include "alertpanel.h"
 #include "mainwindow.h"
+#include "plugin.h"
 
 #include "sylplugin_factory.h"
 
