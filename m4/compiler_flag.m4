@@ -16,6 +16,7 @@ AC_DEFUN([CHECK_CFLAG], [
 if test "$GCC" = "yes"; then
   CHECK_CFLAG([-Wall])
   CHECK_CFLAG([-Wextra])
+  CHECK_CFLAG([-Werror])
   if test "x$check_cflag" = "xno"; then
     CHECK_CFLAG([-W])
   fi
