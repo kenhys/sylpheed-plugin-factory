@@ -195,14 +195,20 @@ void sypf_setup_plugin_onoff_switch(SylPluginFactoryOption *option,
                                     const char **on_xpm,
                                     const char **off_xpm)
 {
-  GtkWidget *main_window = syl_plugin_main_window_get();
-  GtkWidget *statusbar = syl_plugin_main_window_get_statusbar();
-  GtkWidget *plugin_box = gtk_hbox_new(FALSE, 0);
+  GtkWidget *main_window;
+  GtkWidget *statusbar;
+  GtkWidget *plugin_box;
+  GdkPixbuf* on_pixbuf;
+  GdkPixbuf* off_pixbuf;
 
-  GdkPixbuf* on_pixbuf = gdk_pixbuf_new_from_xpm_data(on_xpm);
+  main_window = syl_plugin_main_window_get();
+  statusbar = syl_plugin_main_window_get_statusbar();
+  plugin_box = gtk_hbox_new(FALSE, 0);
+
+  on_pixbuf = gdk_pixbuf_new_from_xpm_data(on_xpm);
   option->plugin_on = gtk_image_new_from_pixbuf(on_pixbuf);
 
-  GdkPixbuf* off_pixbuf = gdk_pixbuf_new_from_xpm_data(off_xpm);
+  off_pixbuf = gdk_pixbuf_new_from_xpm_data(off_xpm);
   option->plugin_off = gtk_image_new_from_pixbuf(off_pixbuf);
 
   gtk_box_pack_start(GTK_BOX(plugin_box), option->plugin_on, FALSE, FALSE, 0);
