@@ -6,6 +6,7 @@ notifications:
   recipients:
     - kenhys@gmail.com
 before_script:
+  - sudo apt-get install sylpheed
   - ./autogen.sh
 script:
   - ./configure
