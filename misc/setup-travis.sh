@@ -18,6 +18,6 @@ case "$SYLPHEED_STAGE" in
 	wget http://sylpheed.sraoss.jp/sylpheed/v3.3/sylpheed-3.3.0.tar.bz2
 	tar ixf sylpheed-3.3.0.tar.bz2
 	(cd sylpheed-3.3.0; ./configure --prefix=/usr; make; sudo make install)
-	ln -sf sylpheed-3.4.0beta3 sylpheed
+	ln -sf sylpheed-3.3.0 sylpheed
 	;;
 esac
