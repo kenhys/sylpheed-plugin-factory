@@ -22,15 +22,15 @@ AC_ARG_WITH(sylplugin-factory-source-dir,
             [specify sylpheed-plugin-factory source directory.])],
             [sylpfdir="$withval"])
 if test "x$sylpfdir" = "x"; then
-  sylplugin_factory_source_dir=`pwd`/..
-  if test -d "$sylplugin_factory_source_dir"; then
-    if test -d "$sylplugin_factory_source_dir/src"; then
+  sylpfdir_available="yes"
+  sylplugin_factory_source_dir=`pwd`/lib/sylplugin_factory
+else
+  if test -d "$sylpfdir"; then
+    if test -d "$sylpfdir/src"; then
       sylpf_dir_available="yes"
+      sylplugin_factory_source_dir=$sylpfdir
     fi
   fi
-else
-  sylpfdir_available="yes"
-  sylplugin_factory_source_dir=$sylpfdir
 fi
 AC_SUBST(sylplugin_factory_source_dir)
 AM_CONDITIONAL([WITH_SYLPLUGIN_FACTORY], [test "$sylpfdir_available" = "yes"])
