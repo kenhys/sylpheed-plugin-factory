@@ -1,5 +1,8 @@
 
 
+sudo apt-get update -qq
+sudo apt-get install -qq libwebkitgtk-dev
+
 case "$SYLPHEED_STAGE" in
     master|head)
 	svn checkout svn://sylpheed.sraoss.jp/sylpheed/trunk sylpheed
