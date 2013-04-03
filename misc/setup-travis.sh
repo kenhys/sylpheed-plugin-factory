@@ -11,13 +11,13 @@ case "$SYLPHEED_STAGE" in
     3.4.0|3.4|beta)
 	wget http://sylpheed.sraoss.jp/sylpheed/v3.4beta/sylpheed-3.4.0beta3.tar.bz2
 	tar ixf sylpheed-3.4.0beta3.tar.bz2
-	(cd sylpheed-3.4.0beta3; ./configure --prefix=/usr; make; sudo make install)
 	ln -sf sylpheed-3.4.0beta3 sylpheed
+	(cd sylpheed-3.4.0beta3; ./configure --prefix=/usr; make; sudo make install)
 	;;
     3.3.0|3.3|stable|*)
 	wget http://sylpheed.sraoss.jp/sylpheed/v3.3/sylpheed-3.3.0.tar.bz2
 	tar ixf sylpheed-3.3.0.tar.bz2
-	(cd sylpheed-3.3.0; ./configure --prefix=/usr; make; sudo make install)
 	ln -sf sylpheed-3.3.0 sylpheed
+	(cd sylpheed-3.3.0; ./configure --prefix=/usr; make; sudo make install)
 	;;
 esac
