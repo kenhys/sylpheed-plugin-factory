@@ -3,12 +3,19 @@ AC_ARG_WITH(sylpheed-build-dir,
             [specify sylpheed build directory.])],
             [syldir="$withval"])
 if test "x$syldir" = "x"; then
+  # for local build under sylpheed/plugin/PLUGINS
   sylpheed_build_dir=`pwd`/../..
   if test -d "$sylpheed_build_dir/libsylph"; then
     if test -d "$sylpheed_build_dir/src"; then
       syldir_available="yes"
-      syldir_available="yes"
     fi
+  fi
+  # for Travis-CI
+  if test -d "sylpheed/libsylph"; then
+     if test -d "$sylpheed_build_dir/src"; then
+     	syldir_available="yes"
+	sylpheed_build_dir=`pwd`/sylpheed
+     fi
   fi
 else
   syldir_available="yes"
