@@ -26,7 +26,7 @@ run() {
 }
 
 sudo apt-get update -qq
-sudo apt-get install -qq libwebkitgtk-dev
+sudo apt-get install -qq libwebkitgtk-dev libonig-dev
 
 case "$SYLPHEED_STAGE" in
     master|head)
