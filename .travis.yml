@@ -12,5 +12,5 @@ before_script:
   - (cd sylpheed-3.3.0; ./configure --prefix=/usr; make; sudo make install)
   - ./autogen.sh
 script:
-  - ./configure
+  - ./configure --with-sylpheed-build-dir=`pwd`/sylpheed
   - make
