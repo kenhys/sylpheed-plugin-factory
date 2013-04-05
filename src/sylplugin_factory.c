@@ -8,6 +8,9 @@
 #include "plugin.h"
 #include "sylmain.h"
 
+#define PLUGIN_NAME "plugin_factory"
+#define PLUGIN_DESC "plugin factory"
+
 #include "sylplugin_factory.h"
 
 static FILE *log_file;

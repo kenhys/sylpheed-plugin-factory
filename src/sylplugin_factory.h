@@ -1,9 +1,6 @@
 #ifndef __SYLPF_UTILITY_H_INCLUDED__
 #define __SYLPF_UTILITY_H_INCLUDED__
 
-#define PLUGIN_NAME "plugin_factory"
-#define PLUGIN_DESC "plugin factory"
-
 #define SYLPF_SYLPHEED_RC "sylpheedrc"
 #define SYLPF_PLUGIN_RC "mypluginrc"
 
