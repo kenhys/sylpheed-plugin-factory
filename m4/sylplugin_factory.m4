@@ -12,7 +12,7 @@ if test "x$syldir" = "x"; then
   fi
   # for Travis-CI
   if test -d "sylpheed/libsylph"; then
-     if test -d "$sylpheed/src"; then
+     if test -d "sylpheed/src"; then
      	syldir_available="yes"
 	sylpheed_build_dir=`pwd`/sylpheed
      fi
