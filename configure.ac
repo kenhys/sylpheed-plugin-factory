@@ -16,8 +16,8 @@ AC_PROG_CC
 AC_PROG_MAKE_SET
 AC_PROG_LIBTOOL
 
-AC_DEFINE([SYLPF_ID], sylplugin_factory, [""])
-AC_DEFINE([SYLPF_OPTION], sylplugin_factory_option, [""])
+AC_DEFINE([SYLPF_ID], [PACKAGE_NAME], [""])
+AC_DEFINE([SYLPF_OPTION], [sylplugin_factory_option], [""])
 
 
 m4_include(m4/compiler_flag.m4)
