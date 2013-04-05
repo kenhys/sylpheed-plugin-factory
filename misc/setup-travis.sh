@@ -27,6 +27,7 @@ run() {
 
 sudo apt-get update -qq
 sudo apt-get install -qq libwebkitgtk-dev libonig-dev
+sudo apt-get install -qq intltool
 
 case "$SYLPHEED_STAGE" in
     master|head)
