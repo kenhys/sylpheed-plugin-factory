@@ -48,3 +48,8 @@ case "$SYLPHEED_STAGE" in
 	;;
 esac
 
+if [ "$USE_SYLFILTER" = "yes" ]; then
+    wgett http://sylpheed.sraoss.jp/sylfilter/src/sylfilter-0.8.tar.gz
+    tar xf sylfilter-0.8.tar.gz
+    (cd sylfiler-0.8 && ./configure --prefix=/usr && make && sudo make install)
+fi
