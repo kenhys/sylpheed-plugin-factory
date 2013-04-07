@@ -51,5 +51,5 @@ esac
 if [ "$USE_SYLFILTER" = "yes" ]; then
     wget http://sylpheed.sraoss.jp/sylfilter/src/sylfilter-0.8.tar.gz
     tar xf sylfilter-0.8.tar.gz
-    (cd sylfiler-0.8 && ./configure --prefix=/usr && make && sudo make install)
+    (cd sylfilter-0.8 && ./configure --prefix=/usr && make && sudo make install)
 fi
