@@ -132,4 +132,9 @@ gboolean sylpf_append_config_about_page(GtkWidget *notebook,
                                         const gchar *plugin_desc,
                                         const gchar *copyright);
 
+gchar *sylpf_format_gitcommitmailer_text(gchar *text);
+
+gchar *sylpf_get_repo_name_from_msginfo(MsgInfo *msginfo);
+gchar *sylpf_get_commit_hash_from_msginfo(MsgInfo *msginfo);
+
 #endif
