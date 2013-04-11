@@ -123,4 +123,6 @@ gchar *sylpf_append_code_markup(gchar *text,
 
 void sylpf_init_preference_dialog_size(GtkWidget *dialog);
 
+void sylpf_update_folderview_visibility(gboolean visible);
+
 #endif

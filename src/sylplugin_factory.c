@@ -442,4 +442,24 @@ gchar *sylpf_append_code_markup(gchar *text,
   SYLPF_RETURN_VALUE(markup);
 }
 
+void sylpf_update_folderview_visibility(gboolean visible)
+{
+  gpointer mainwin;
+  MainWindow *window;
+  
+  SYLPF_START_FUNC;
+
+  mainwin = syl_plugin_main_window_get();
+  g_return_if_fail(mainwin != NULL);
+
+  window = (MainWindow*)mainwin;
+  g_return_if_fail(window != NULL);
+
+  if (visible) {
+    gtk_widget_show(window->folderview->vbox);
+  } else {
+    gtk_widget_hide(window->folderview->vbox);
+  }
+  SYLPF_END_FUNC;
+}
 
