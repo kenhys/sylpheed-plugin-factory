@@ -513,3 +513,27 @@ gboolean sylpf_append_config_about_page(GtkWidget *notebook,
 
   SYLPF_RETURN_VALUE(TRUE);
 }
+
+gchar *sylpf_get_repo_name_from_msginfo(MsgInfo *msginfo)
+{
+  gchar *text = sylpf_get_text_from_message_partial(msginfo, MIME_TEXT);
+  return text;
+}
+
+gchar *sylpf_get_commit_hash_from_msginfo(MsgInfo *msginfo)
+{
+  gchar *text;
+  gchar *revision, *marker;
+
+  text = sylpf_get_text_from_message_partial(msginfo, MIME_TEXT);
+
+  revision = g_strstr_len(text, -1, "New Revision: ");
+  g_return_val_if_fail(revision != NULL, "N/A");
+
+  revision += strlen("New Revision: ");
+
+  marker = g_strstr_len(revision, -1, "\n");
+
+  return g_strndup(revision, 7);
+}
+
