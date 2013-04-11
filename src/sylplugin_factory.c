@@ -463,3 +463,53 @@ void sylpf_update_folderview_visibility(gboolean visible)
   SYLPF_END_FUNC;
 }
 
+gboolean sylpf_append_config_about_page(GtkWidget *notebook,
+                                        GKeyFile *pkey,
+                                        const gchar *widget_tab,
+                                        const gchar *plugin_label,
+                                        const gchar *plugin_desc,
+                                        const gchar *copyright)
+{
+  GtkWidget *hbox;
+  GtkWidget *vbox;
+  GtkWidget *label;
+  GtkWidget *desc;
+  GtkWidget *scrolled;
+  GtkTextBuffer *tbuffer;
+  GtkWidget *tview;
+
+  SYLPF_START_FUNC;
+
+  g_return_val_if_fail(notebook != NULL, FALSE);
+
+  hbox = gtk_hbox_new(TRUE, SYLPF_BOX_SPACE);
+  vbox = gtk_vbox_new(FALSE, SYLPF_BOX_SPACE);
+
+  label = gtk_label_new(plugin_label);
+  desc = gtk_label_new(plugin_desc);
+
+  scrolled = gtk_scrolled_window_new(NULL, NULL);
+
+  gtk_box_pack_start(GTK_BOX(vbox), label,
+                     FALSE, TRUE, SYLPF_BOX_SPACE);
+  gtk_box_pack_start(GTK_BOX(vbox), desc,
+                     FALSE, TRUE, SYLPF_BOX_SPACE);
+  gtk_box_pack_start(GTK_BOX(vbox), scrolled,
+                     TRUE, TRUE, SYLPF_BOX_SPACE);
+  gtk_box_pack_start(GTK_BOX(hbox), vbox,
+                     TRUE, TRUE, SYLPF_BOX_SPACE);
+
+  tbuffer = gtk_text_buffer_new(NULL);
+  gtk_text_buffer_set_text(tbuffer, copyright, strlen(copyright));
+  tview = gtk_text_view_new_with_buffer(tbuffer);
+  gtk_text_view_set_editable(GTK_TEXT_VIEW(tview), FALSE);
+  gtk_container_add(GTK_CONTAINER(scrolled), tview);
+
+  gtk_box_pack_start(GTK_BOX(vbox), scrolled, TRUE, TRUE, 6);
+
+  label = gtk_label_new(widget_tab);
+  gtk_notebook_append_page(GTK_NOTEBOOK(notebook), hbox, label);
+  gtk_widget_show_all(notebook);
+
+  SYLPF_RETURN_VALUE(TRUE);
+}

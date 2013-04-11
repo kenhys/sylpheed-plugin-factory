@@ -125,4 +125,11 @@ void sylpf_init_preference_dialog_size(GtkWidget *dialog);
 
 void sylpf_update_folderview_visibility(gboolean visible);
 
+gboolean sylpf_append_config_about_page(GtkWidget *notebook,
+                                        GKeyFile *pkey,
+                                        const gchar *widget_tab,
+                                        const gchar *plugin_label,
+                                        const gchar *plugin_desc,
+                                        const gchar *copyright);
+
 #endif
