@@ -1,4 +1,4 @@
-OPTIONS=""
+OPTIONS=" --with-sylpheed-build-dir=`pwd`/sylpheed "
 
 if [ -n "$USE_WEBKITGTK" ]; then
     OPTIONS="$OPTIONS --enable-webkitgtk"
