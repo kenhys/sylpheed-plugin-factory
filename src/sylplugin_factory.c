@@ -22,6 +22,13 @@ static GStaticMutex log_mutex;
 static GMutex log_mutex;
 #endif
 
+static gchar *get_gitcommitmailer_summary(gchar *text);
+static gchar *extract_pair_text(gchar *text, gchar *key, gchar *marker);
+static gchar *get_revision_from_commit_mail(gchar *text);
+static gchar *get_author_from_commit_mail(gchar *text);
+static gchar *get_date_from_commit_mail(gchar *text);
+static gchar *get_gitcommitmailer_diff(gchar *text);
+
 void sylpf_log_handler(const gchar *log_domain,
                        GLogLevelFlags log_level,
                        const gchar *message,
@@ -370,7 +377,8 @@ gchar *sylpf_format_diff2html_text(gchar const *text)
   
   SYLPF_START_FUNC;
 
-  buf = "<html>\n"
+  buf = "<!DOCTYPE html>\n"
+    "<head>"
     "<style type=\"text/css\">\n"
     "<!--\n"
     "div.yellow { background: #ffe; font-family: monospace; }\n"
@@ -380,6 +388,7 @@ gchar *sylpf_format_diff2html_text(gchar const *text)
     "pre {padding: 0; margin: 0;}\n"
     "-->\n"
     "</style>\n"
+    "</head>"
     "<body>\n"
     "<pre>\n";
   
@@ -441,6 +450,297 @@ gchar *sylpf_append_code_markup(gchar *text,
 
   SYLPF_RETURN_VALUE(markup);
 }
+
+static gchar *extract_pair_text(gchar *text, gchar *key, gchar *marker)
+{
+  gchar *item;
+
+  SYLPF_START_FUNC;
+
+  SYLPF_DEBUG_STR("key", key);
+  SYLPF_DEBUG_STR("marker", marker);
+
+  item = g_strstr_len(text, -1, key);
+  g_return_val_if_fail(item != NULL, "N/A");
+
+  item += strlen(key);
+
+  marker = g_strstr_len(item, -1, marker);
+  
+  SYLPF_RETURN_VALUE(g_strndup(item, marker-item));
+}
+
+gchar *sylpf_format_gitcommitmailer_text(gchar *text)
+{
+  gchar *summary;
+  gchar *body;
+  gchar *html;
+  
+  SYLPF_START_FUNC;
+
+  summary = get_gitcommitmailer_summary(text);
+  body = get_gitcommitmailer_diff(text);
+  html = g_strconcat(summary, body, NULL);
+  g_free(summary);
+  g_free(body);
+
+  SYLPF_RETURN_VALUE(html);
+}
+
+static gchar *get_gitcommitmailer_summary(gchar *text)
+{
+  gchar *html;
+  gchar *revision;
+  gchar *author;
+  gchar *date;
+  gchar *message;
+  gchar *files;
+  gchar *dt_style;
+  gchar *pre_style;
+  
+  SYLPF_START_FUNC;
+
+  html = NULL;
+  revision = get_revision_from_commit_mail(text);
+  author = get_author_from_commit_mail(text);
+  date = get_date_from_commit_mail(text);
+  message = extract_pair_text(text, "Message:", "Modified files:");
+  files = extract_pair_text(text, "Modified files:", "Modified: ");
+
+  dt_style = "clear: both; float: left; font-weight: bold; width: 8em";
+
+  pre_style = "border: 1px solid #aaa; "
+    "font-family: Consolas, Menlo, &quot;Liberation Mono&quot;, Courier, monospace;"
+    "line-height: 1.2; padding: 0.5em; width: auto";
+  
+  html = g_strdup_printf("<dl style=\"line-height: 1.5; margin-left: 2em\">"
+                         "<dt style=\"%s\">Author</dt>"
+                         "<dd style=\"margin-left: 8.5em\">%s &lt;%s&gt;</dd>"
+                         "<dt style=\"%s\">Date</dt>"
+                         "<dd style=\"margin-left: 8.5em\">%s</dd>"
+                         "<dt style=\"%s\">New Revision</dt>"
+                         "<dd style=\"margin-left: 8.5em\">%s</dd>"
+                         "<dt style=\"%s\">Messages</dt>"
+                         "<dd style=\"margin-left: 8.5em\">"
+                         "<pre style=\"%s\">%s</pre></dd>"
+                         "<dt style=\"%s\">Modified files</dt>"
+                         "<dd style=\"margin-left: 8.5em\">%s</dd>",
+                         dt_style, author, "<@example.com>",
+                         dt_style, date,
+                         dt_style, revision,
+                         dt_style, pre_style, message,
+                         dt_style, files);
+  SYLPF_RETURN_VALUE(html);
+}
+
+static gchar *get_gitcommitmailer_diff(gchar *text)
+{
+  gchar *html = "<div class=\"diff-section\" style=\"clear: both\">";
+  gchar *pattern_modified = "  Modified: (.+)\\s\\(\\+(\\d+)\\s-(\\d+)\\)";
+  gchar *modified;
+  gchar *match;
+  gchar *added;
+  gchar *deleted;
+  gchar *thead;
+  gchar *tbody;
+  gchar **lines;
+  gchar *line;
+  gint index_src;
+  gint index_dest;
+  gint index;
+  gint n_lines;
+  gint n_modified;
+  GList *modified_list;
+  gpointer value;
+#if GTK_CHECK_VERSION(2, 14, 0)
+  GRegex *regex;
+  GMatchInfo *match_info;
+#else
+#endif
+
+  SYLPF_START_FUNC;
+
+  match = NULL;
+  modified = NULL;
+  
+  modified_list = g_list_alloc();
+  
+  lines = g_strsplit(text, "\n", -1);
+  
+  n_modified = 0;
+  n_lines = 0;
+  index = 0;
+  while (lines[n_lines]) {
+    if (g_str_has_prefix(lines[n_lines], "  Modified:")) {
+      if (lines[n_lines] != NULL &&
+          lines[n_lines + 1] != NULL &&
+          lines[n_lines + 2] != NULL &&
+          lines[n_lines + 3] != NULL &&
+          g_str_has_prefix(lines[n_lines], "===") &&
+          g_str_has_prefix(lines[n_lines], "---") &&
+          g_str_has_prefix(lines[n_lines], "+++") &&
+          g_str_has_prefix(lines[n_lines], "@@ ")) {
+        modified_list = g_list_append(modified_list, GINT_TO_POINTER(n_lines));
+      }
+    }
+    n_lines++;
+  }
+  
+#if GTK_CHECK_VERSION(2, 14, 0)
+  regex = g_regex_new(pattern_modified, 0, 0, NULL);
+  g_regex_match(regex, text, 0, &match_info);
+  while (g_match_info_matches(match_info)) {
+
+    match = g_match_info_fetch(match_info, 1);
+    added = g_match_info_fetch(match_info, 2);
+    deleted = g_match_info_fetch(match_info, 3);
+    g_print ("Found: %s\n", match);
+    g_print ("Found: %s\n", added);
+    g_print ("Found: %s\n", deleted);
+
+    thead = g_strdup_printf("<thead>"
+                           "<tr class=\"diff-header\" style=\"border: 1px solid #aaa\">"
+                           "<td colspan=\"3\">"
+                           "<pre style=\"border: 0; font-family: Consolas, Menlo, &quot;"
+                           "Liberation Mono&quot;"
+                           ", Courier, monospace; line-height: 1.2; margin: 0;"
+                           " padding: 0.5em; white-space: normal; width: auto\">"
+                           "<span class=\"diff-header\" style=\"background-color: #eaf2f5;"
+                           "color: #999999; display: block; white-space: pre\">"
+                           "Modified: %s (+%s -%s)</span>"
+                           "<span class=\"diff-header-mark\" style=\"background-color: #eaf2f5;"
+                           "color: #999999; display: block; white-space: pre\">"
+                           "==================================================================="
+                           "</span>"
+                           "</pre>"
+                           "</td>"
+                           "</tr>"
+                           "</thead>",
+                           match, added, deleted);
+
+    value = g_list_nth_data(modified_list, n_modified);
+    index = GPOINTER_TO_INT(value);
+    line = lines[index + 4];
+    index_src = g_strtod(&line[4], NULL);
+    index_dest = index_src;
+    g_print ("Found: %d\n", index_src);
+
+    while (index < n_lines) {
+      if (n_modified < g_list_length(modified_list) - 1) {
+        value = g_list_nth_data(modified_list, n_modified + 1);
+        if (index < GPOINTER_TO_INT(value)) {
+          line = lines[index];
+          if (line[0] == '-') {
+            index_src++;
+          } else if (line[0] == '+') {
+            index_dest++;
+          } else {
+          }
+        }
+      }
+      index++;
+    }
+    tbody = g_strdup_printf("<tbody></tbody></table>");
+
+    html = g_strdup_printf("%s<table style=\"border-collapse: collapse;"
+                           "border: 1px solid #aaa\">"
+                           "%s%s",
+                           html, thead, tbody);
+
+    n_modified++;
+    g_match_info_next(match_info, NULL);
+  }
+  html = g_strdup_printf("%s</div>", html);
+
+  g_match_info_free(match_info);
+  g_regex_unref(regex);
+  if (g_utf8_strlen(match, -1) == 0) {
+    match = "N/A";
+  }
+
+  g_strfreev(lines);
+#endif
+  SYLPF_RETURN_VALUE(html);
+}   
+
+gchar *sylpf_search_matched_string(gchar *text, const gchar *pattern, gint ref, gchar *marker)
+{
+  gchar *match;
+#if GTK_CHECK_VERSION(2, 14, 0)
+  GRegex *regex;
+  GMatchInfo *match_info;
+#else
+#endif
+
+  match = NULL;
+
+#if GTK_CHECK_VERSION(2, 14, 0)
+  regex = g_regex_new(pattern, 0, 0, NULL);
+  g_regex_match(regex, text, 0, &match_info);
+  while (g_match_info_matches(match_info)) {
+    match = g_match_info_fetch(match_info, ref);
+    g_print ("Found: %s\n", match);
+    g_match_info_next(match_info, NULL);
+  }
+  g_match_info_free(match_info);
+  g_regex_unref(regex);
+  if (g_utf8_strlen(match, -1) == 0) {
+    match = "N/A";
+  }
+#endif
+  SYLPF_RETURN_VALUE(match);
+}
+
+static gchar *get_revision_from_commit_mail(gchar *text)
+{
+  gchar *revision;
+  const gchar *pattern = "New Revision: (.+)";
+#if GTK_CHECK_VERSION(2, 14, 0)
+#else
+#endif
+
+  SYLPF_START_FUNC;
+  
+#if GTK_CHECK_VERSION(2, 14, 0)
+  revision = sylpf_search_matched_string(text, pattern, 1, NULL);
+#else
+  revision = extract_pair_text(text, "New Revision: ", "\n");
+#endif
+  
+  SYLPF_RETURN_VALUE(revision);
+}
+
+
+static gchar *get_date_from_commit_mail(gchar *text)
+{
+  gchar *date;
+  const gchar *pattern = "\\s(\\d+-\\d+-\\d+\\s\\d+:\\d+:\\d+\\s\\+\\d+\\s\\(\\w+,\\s\\d+\\s\\w+\\s\\d+\\))";
+
+  SYLPF_START_FUNC;
+
+#if GTK_CHECK_VERSION(2, 14, 0)
+  date = sylpf_search_matched_string(text, pattern, 1, NULL);
+#else
+#endif
+                                     
+  SYLPF_RETURN_VALUE(date);
+}
+
+static gchar *get_author_from_commit_mail(gchar *text)
+{
+  const gchar *pattern = "(.+)\\s\\d+-\\d+-\\d+\\s\\d+:\\d+:\\d+\\s\\+\\d+\\s\\(\\w+,\\s\\d+\\s\\w+\\s\\d+\\)";
+  gchar *author;
+  
+  SYLPF_START_FUNC;
+
+#if GTK_CHECK_VERSION(2, 14, 0)
+  author = sylpf_search_matched_string(text, pattern, 1, NULL);
+#else
+#endif
+                                     
+  SYLPF_RETURN_VALUE(author);
+}
+
 
 void sylpf_update_folderview_visibility(gboolean visible)
 {

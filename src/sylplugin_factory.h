@@ -46,6 +46,9 @@ struct _SylPluginFactoryOption {
 #define SYLPF_DEBUG_STR(msg, val) \
   g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[%s] %s:%s", __func__, msg, val)
 
+#define SYLPF_DEBUG_DSTR(msg, val) \
+  g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[%s] %s:|%s|", __func__, msg, val)
+
 #define SYLPF_DEBUG_PTR(msg, val) \
   g_log(SYLPF_ID, G_LOG_LEVEL_DEBUG, "[%s] %s:%p", __func__, msg, (void*)val)
 
@@ -136,5 +139,8 @@ gchar *sylpf_format_gitcommitmailer_text(gchar *text);
 
 gchar *sylpf_get_repo_name_from_msginfo(MsgInfo *msginfo);
 gchar *sylpf_get_commit_hash_from_msginfo(MsgInfo *msginfo);
+gchar *sylpf_search_matched_string(gchar *text, const gchar *pattern,
+                                   gint ref, gchar *marker);
+
 
 #endif
