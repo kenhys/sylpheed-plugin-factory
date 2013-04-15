@@ -533,6 +533,31 @@ static gchar *get_gitcommitmailer_summary(gchar *text)
   SYLPF_RETURN_VALUE(html);
 }
 
+static GList *get_modified_files_list(gchar **lines, gint *n_lines)
+{
+  GList *modified;
+
+  modified = g_list_alloc();
+  n_lines = 0;
+  while (lines[n_lines]) {
+    if (g_str_has_prefix(lines[n_lines], "  Modified:")) {
+      if (lines[n_lines] != NULL &&
+          lines[n_lines + 1] != NULL &&
+          lines[n_lines + 2] != NULL &&
+          lines[n_lines + 3] != NULL &&
+          g_str_has_prefix(lines[n_lines], "===") &&
+          g_str_has_prefix(lines[n_lines], "---") &&
+          g_str_has_prefix(lines[n_lines], "+++") &&
+          g_str_has_prefix(lines[n_lines], "@@ ")) {
+        g_list_append(modified_list, GINT_TO_POINTER(n_lines));
+      }
+    }
+    n_lines++;
+  }
+  return modified;
+}
+
+#define N_COLUMNS 3
 static gchar *get_gitcommitmailer_diff(gchar *text)
 {
   gchar *html = "<div class=\"diff-section\" style=\"clear: both\">";
@@ -563,28 +588,13 @@ static gchar *get_gitcommitmailer_diff(gchar *text)
   match = NULL;
   modified = NULL;
   
-  modified_list = g_list_alloc();
   
   lines = g_strsplit(text, "\n", -1);
   
   n_modified = 0;
   n_lines = 0;
   index = 0;
-  while (lines[n_lines]) {
-    if (g_str_has_prefix(lines[n_lines], "  Modified:")) {
-      if (lines[n_lines] != NULL &&
-          lines[n_lines + 1] != NULL &&
-          lines[n_lines + 2] != NULL &&
-          lines[n_lines + 3] != NULL &&
-          g_str_has_prefix(lines[n_lines], "===") &&
-          g_str_has_prefix(lines[n_lines], "---") &&
-          g_str_has_prefix(lines[n_lines], "+++") &&
-          g_str_has_prefix(lines[n_lines], "@@ ")) {
-        modified_list = g_list_append(modified_list, GINT_TO_POINTER(n_lines));
-      }
-    }
-    n_lines++;
-  }
+  modified_list = get_modified_files_list(lines, &n_lines);
   
 #if GTK_CHECK_VERSION(2, 14, 0)
   regex = g_regex_new(pattern_modified, 0, 0, NULL);
