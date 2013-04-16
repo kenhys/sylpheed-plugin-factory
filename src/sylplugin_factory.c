@@ -588,69 +588,21 @@ static gchar *get_gitcommitmailer_diff(gchar *text)
   match = NULL;
   modified = NULL;
   
-  
   lines = g_strsplit(text, "\n", -1);
   
-  n_modified = 0;
   n_lines = 0;
   index = 0;
   modified_list = get_modified_files_list(lines, &n_lines);
+  n_modified = g_list_length(modified_list);
   
 #if GTK_CHECK_VERSION(2, 14, 0)
   regex = g_regex_new(pattern_modified, 0, 0, NULL);
   g_regex_match(regex, text, 0, &match_info);
   while (g_match_info_matches(match_info)) {
 
-    match = g_match_info_fetch(match_info, 1);
-    added = g_match_info_fetch(match_info, 2);
-    deleted = g_match_info_fetch(match_info, 3);
-    g_print ("Found: %s\n", match);
-    g_print ("Found: %s\n", added);
-    g_print ("Found: %s\n", deleted);
+    thead = get_thead_html(match_info);
 
-    thead = g_strdup_printf("<thead>"
-                           "<tr class=\"diff-header\" style=\"border: 1px solid #aaa\">"
-                           "<td colspan=\"3\">"
-                           "<pre style=\"border: 0; font-family: Consolas, Menlo, &quot;"
-                           "Liberation Mono&quot;"
-                           ", Courier, monospace; line-height: 1.2; margin: 0;"
-                           " padding: 0.5em; white-space: normal; width: auto\">"
-                           "<span class=\"diff-header\" style=\"background-color: #eaf2f5;"
-                           "color: #999999; display: block; white-space: pre\">"
-                           "Modified: %s (+%s -%s)</span>"
-                           "<span class=\"diff-header-mark\" style=\"background-color: #eaf2f5;"
-                           "color: #999999; display: block; white-space: pre\">"
-                           "==================================================================="
-                           "</span>"
-                           "</pre>"
-                           "</td>"
-                           "</tr>"
-                           "</thead>",
-                           match, added, deleted);
-
-    value = g_list_nth_data(modified_list, n_modified);
-    index = GPOINTER_TO_INT(value);
-    line = lines[index + 4];
-    index_src = g_strtod(&line[4], NULL);
-    index_dest = index_src;
-    g_print ("Found: %d\n", index_src);
-
-    while (index < n_lines) {
-      if (n_modified < g_list_length(modified_list) - 1) {
-        value = g_list_nth_data(modified_list, n_modified + 1);
-        if (index < GPOINTER_TO_INT(value)) {
-          line = lines[index];
-          if (line[0] == '-') {
-            index_src++;
-          } else if (line[0] == '+') {
-            index_dest++;
-          } else {
-          }
-        }
-      }
-      index++;
-    }
-    tbody = g_strdup_printf("<tbody></tbody></table>");
+    tbody = get_tbody_html(modified_list, n_modified);
 
     html = g_strdup_printf("%s<table style=\"border-collapse: collapse;"
                            "border: 1px solid #aaa\">"
