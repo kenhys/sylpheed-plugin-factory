@@ -671,7 +671,33 @@ static gchar *get_gitcommitmailer_diff(gchar *text)
   g_strfreev(lines);
 #endif
   SYLPF_RETURN_VALUE(html);
-}   
+} 
+#undef N_COLUMNS
+
+static gchar *get_line_no_html(GList *modified)
+{
+  gint n_modified;
+  gint index;
+  gpointer value;
+  
+  while (index < n_lines) {
+    if (n_modified < g_list_length(modified) - 1) {
+      value = g_list_nth_data(modified, n_modified + 1);
+      if (index < GPOINTER_TO_INT(value)) {
+        line = lines[index];
+        if (line[0] == '-') {
+          index_src++;
+        } else if (line[0] == '+') {
+          index_dest++;
+        } else {
+        }
+      }
+    }
+    index++;
+  }
+}
+
+  
 
 gchar *sylpf_search_matched_string(gchar *text, const gchar *pattern, gint ref, gchar *marker)
 {
