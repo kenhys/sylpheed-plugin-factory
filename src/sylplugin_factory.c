@@ -28,6 +28,11 @@ static gchar *get_revision_from_commit_mail(gchar *text);
 static gchar *get_author_from_commit_mail(gchar *text);
 static gchar *get_date_from_commit_mail(gchar *text);
 static gchar *get_gitcommitmailer_diff(gchar *text);
+static GList *get_modified_files_list(gchar **lines, gint *n_lines);
+static gchar *get_thead_html(GMatchInfo *match_info);
+static gchar *get_tbody_html(GList *modified, gint index, gchar **lines, gint n_lines);
+static gchar *get_src_line_no_html(GList *modified, gint index, gchar **lines, gint n_lines);
+static gchar *get_dest_line_no_html(GList *modified, gint index, gchar **lines, gint n_lines);
 
 void sylpf_log_handler(const gchar *log_domain,
                        GLogLevelFlags log_level,
@@ -536,47 +541,126 @@ static gchar *get_gitcommitmailer_summary(gchar *text)
 static GList *get_modified_files_list(gchar **lines, gint *n_lines)
 {
   GList *modified;
+  gint index;
+
+  SYLPF_START_FUNC;
 
   modified = g_list_alloc();
-  n_lines = 0;
-  while (lines[n_lines]) {
-    if (g_str_has_prefix(lines[n_lines], "  Modified:")) {
-      if (lines[n_lines] != NULL &&
-          lines[n_lines + 1] != NULL &&
-          lines[n_lines + 2] != NULL &&
-          lines[n_lines + 3] != NULL &&
-          g_str_has_prefix(lines[n_lines], "===") &&
-          g_str_has_prefix(lines[n_lines], "---") &&
-          g_str_has_prefix(lines[n_lines], "+++") &&
-          g_str_has_prefix(lines[n_lines], "@@ ")) {
-        g_list_append(modified_list, GINT_TO_POINTER(n_lines));
+  index = 0;
+  while (lines[index]) {
+    if (g_str_has_prefix(lines[index], "  Modified:")) {
+      if (lines[index] != NULL &&
+          lines[index + 1] != NULL &&
+          lines[index + 2] != NULL &&
+          lines[index + 3] != NULL &&
+          g_str_has_prefix(lines[index], "===") &&
+          g_str_has_prefix(lines[index], "---") &&
+          g_str_has_prefix(lines[index], "+++") &&
+          g_str_has_prefix(lines[index], "@@ ")) {
+        modified = g_list_append(modified, GINT_TO_POINTER(index));
       }
     }
-    n_lines++;
+    index++;
   }
-  return modified;
+  *n_lines = index;
+
+  SYLPF_RETURN_VALUE(modified);
 }
 
 #define N_COLUMNS 3
+static gchar *get_thead_html(GMatchInfo *match_info)
+{
+  gchar *html;
+  gchar *match;
+  gchar *added;
+  gchar *deleted;
+
+  match = g_match_info_fetch(match_info, 1);
+  added = g_match_info_fetch(match_info, 2);
+  deleted = g_match_info_fetch(match_info, 3);
+  g_print ("Found: %s\n", match);
+  g_print ("Found: %s\n", added);
+  g_print ("Found: %s\n", deleted);
+
+  html = g_strdup_printf("<thead>"
+                         "<tr class=\"diff-header\" style=\"border: 1px solid #aaa\">"
+                         "<td colspan=\"3\">"
+                         "<pre style=\"border: 0; font-family: Consolas, Menlo, &quot;"
+                         "Liberation Mono&quot;"
+                         ", Courier, monospace; line-height: 1.2; margin: 0;"
+                         " padding: 0.5em; white-space: normal; width: auto\">"
+                         "<span class=\"diff-header\" style=\"background-color: #eaf2f5;"
+                         "color: #999999; display: block; white-space: pre\">"
+                         "Modified: %s (+%s -%s)</span>"
+                         "<span class=\"diff-header-mark\" style=\"background-color: #eaf2f5;"
+                         "color: #999999; display: block; white-space: pre\">"
+                         "==================================================================="
+                         "</span>"
+                         "</pre>"
+                         "</td>"
+                         "</tr>"
+                         "</thead>",
+                         match, added, deleted);
+  return html;
+}
+
+static gchar *get_tbody_html(GList *modified, gint index, gchar **lines, gint n_lines)
+{
+  gpointer value;
+  gchar *line;
+  gint offset;
+  gint base_no;
+  gint src_no;
+  gint dest_no;
+  gint column_no;
+  gchar *src_no_html;
+  gchar *dest_no_html;
+  gchar *source_html;
+  gchar *html;
+
+  SYLPF_START_FUNC;
+
+  value = g_list_nth_data(modified, index);
+  offset = GPOINTER_TO_INT(value);
+  line = lines[offset + 4];
+  base_no = g_strtod(&line[4], NULL);
+  src_no = base_no;
+  dest_no = base_no;
+  g_print ("Found: %d\n", src_no);
+
+  for (column_no = 0; column_no < N_COLUMNS; column_no++) {
+    switch (column_no) {
+    case 0:
+      src_no_html = get_src_line_no_html(modified, index, lines, n_lines);
+      break;
+    case 1:
+      dest_no_html = get_dest_line_no_html(modified, index, lines, n_lines);
+      break;
+    default:
+      source_html = "";
+    }
+  }
+  html = g_strdup_printf("<tbody>"
+                         "<tr>%s%s%s</tr>"
+                         "</tbody></table>",
+                         src_no_html,
+                         dest_no_html,
+                         source_html);
+  return html;
+}
+
 static gchar *get_gitcommitmailer_diff(gchar *text)
 {
   gchar *html = "<div class=\"diff-section\" style=\"clear: both\">";
   gchar *pattern_modified = "  Modified: (.+)\\s\\(\\+(\\d+)\\s-(\\d+)\\)";
   gchar *modified;
   gchar *match;
-  gchar *added;
-  gchar *deleted;
   gchar *thead;
   gchar *tbody;
   gchar **lines;
-  gchar *line;
-  gint index_src;
-  gint index_dest;
-  gint index;
   gint n_lines;
   gint n_modified;
   GList *modified_list;
-  gpointer value;
 #if GTK_CHECK_VERSION(2, 14, 0)
   GRegex *regex;
   GMatchInfo *match_info;
@@ -589,9 +673,8 @@ static gchar *get_gitcommitmailer_diff(gchar *text)
   modified = NULL;
   
   lines = g_strsplit(text, "\n", -1);
-  
+
   n_lines = 0;
-  index = 0;
   modified_list = get_modified_files_list(lines, &n_lines);
   n_modified = g_list_length(modified_list);
   
@@ -602,7 +685,7 @@ static gchar *get_gitcommitmailer_diff(gchar *text)
 
     thead = get_thead_html(match_info);
 
-    tbody = get_tbody_html(modified_list, n_modified);
+    tbody = get_tbody_html(modified_list, n_modified, lines, n_lines);
 
     html = g_strdup_printf("%s<table style=\"border-collapse: collapse;"
                            "border: 1px solid #aaa\">"
@@ -624,29 +707,43 @@ static gchar *get_gitcommitmailer_diff(gchar *text)
 #endif
   SYLPF_RETURN_VALUE(html);
 } 
-#undef N_COLUMNS
 
-static gchar *get_line_no_html(GList *modified)
+static gchar *get_src_line_no_html(GList *modified, gint index, gchar **lines, gint n_lines)
+{
+  gchar *html;
+  html = "";
+  return html;
+}
+
+static gchar *get_dest_line_no_html(GList *modified, gint index, gchar **lines, gint n_lines)
 {
   gint n_modified;
-  gint index;
   gpointer value;
+  gchar *line;
+  gint src_no;
+  gint dest_no;
+  gchar *html;
   
+  html = "";
+  n_modified = 0;
+  src_no = 0;
+  dest_no = 0;
   while (index < n_lines) {
     if (n_modified < g_list_length(modified) - 1) {
       value = g_list_nth_data(modified, n_modified + 1);
       if (index < GPOINTER_TO_INT(value)) {
         line = lines[index];
         if (line[0] == '-') {
-          index_src++;
+          src_no++;
         } else if (line[0] == '+') {
-          index_dest++;
+          dest_no++;
         } else {
         }
       }
     }
     index++;
   }
+  return html;
 }
 
   
@@ -728,6 +825,7 @@ static gchar *get_author_from_commit_mail(gchar *text)
                                      
   SYLPF_RETURN_VALUE(author);
 }
+#undef N_COLUMNS
 
 
 void sylpf_update_folderview_visibility(gboolean visible)
