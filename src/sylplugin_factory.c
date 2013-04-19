@@ -632,7 +632,7 @@ static gchar *get_tbody_html(SylpfGitCommitMailerInfo *info)
   SYLPF_START_FUNC;
 
   value = g_list_nth_data(info->modified, info->modified_index);
-  start = GPOINTER_TO_INT(value);
+  start = GPOINTER_TO_INT(value) + 4;
   line = info->lines[start + 4];
   line_no = g_strtod(&line[4], NULL);
   SYLPF_DEBUG_VAL("start line no", start);
