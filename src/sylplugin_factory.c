@@ -545,13 +545,15 @@ static GList *get_modified_files_list(gchar **lines, gint *n_lines)
 {
   GList *modified;
   gint index;
-
+  gpointer data;
+  
   SYLPF_START_FUNC;
 
-  modified = g_list_alloc();
+  modified = NULL;
   index = 0;
   while (lines[index]) {
     SYLPF_DEBUG_STR("is modified line?", lines[index]);
+    SYLPF_DEBUG_VAL("is modified line?", index);
     if (g_str_has_prefix(lines[index], "  Modified:")) {
       if (lines[index + 1] != NULL &&
           lines[index + 2] != NULL &&
