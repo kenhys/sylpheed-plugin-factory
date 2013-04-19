@@ -17,6 +17,15 @@ struct _SylPluginFactoryOption {
   GtkTooltips *plugin_tooltip;
 };
 
+typedef struct _SylpfGitCommitMailerInfo SylpfGitCommitMailerInfo;
+struct _SylpfGitCommitMailerInfo {
+  GList *modified;
+  gint modified_index;
+  gchar **lines;
+  gint n_lines;
+  gint line_no;
+};
+
 #define SYLPF_ALIGN_TOP 3
 #define SYLPF_ALIGN_BOTTOM 3
 #define SYLPF_ALIGN_LEFT 6
