@@ -35,6 +35,7 @@ static gchar *get_src_line_no_html(gint line_no, gchar **lines, gint start, gint
 static gchar *get_dest_line_no_html(gint line_no, gchar **lines, gint start, gint end);
 static gchar *get_line_no_html(gint line_no, gchar **lines, gint start, gint end,
                                gchar *src_mark, gchar *dest_mark);
+static gchar *get_source_html(gint line_no, gchar **lines, gint start, gint end);
 
 void sylpf_log_handler(const gchar *log_domain,
                        GLogLevelFlags log_level,
@@ -650,11 +651,9 @@ static gchar *get_tbody_html(SylpfGitCommitMailerInfo *info)
       break;
     case 1:
       dest_no_html = get_dest_line_no_html(line_no, info->lines, start, end);
-      g_print("dest_no_html:|%s|\n", dest_no_html);
       break;
     default:
-      source_html = "";
-      //get_source_html(line_no, info->lines, start, end);
+      source_html = get_source_html(line_no, info->lines, start, end);
       break;
     }
   }
@@ -794,6 +793,42 @@ static gchar *get_line_no_html(gint line_no, gchar **lines, gint start, gint end
   return html;
 }
   
+static gchar *get_source_html(gint line_no, gchar **lines, gint start, gint end)
+{
+  gchar *html;
+  gchar *buf;
+  gint index;
+  gchar *line;
+  const gchar *style_added = "background-color: #aaffaa; color: #000000; display: block; white-space: pre";
+  const gchar *style_deleted = "background-color: #ffaaaa; color: #000000; display: block; white-space: pre";
+
+  buf = "";
+  for (index = start; index <= end; index++) {
+    line = lines[index];
+    SYLPF_DEBUG_STR("line", line);
+    if (g_str_has_prefix(line, "+")) {
+      buf = g_strdup_printf("%s<span class=\"%s\" style=\"%s\">%s</span>",
+                            buf, "diff-added", style_added, line);
+    } else if (g_str_has_prefix(line, "-")) {
+      buf = g_strdup_printf("%s<span class=\"%s\" style=\"%s\">%s</span>",
+                            buf, "diff-deleted", style_deleted, line);
+    } else {
+      buf = g_strdup_printf("%s<span class=\"%s\" style=\"%s\">%s</span>",
+                            buf, "diff-not-changed", "display: block; white-space: pre", line);
+    }
+  }
+  
+  html = g_strdup_printf("<td class=\"diff-content\" style=\"border: 1px solid #aaa\">"
+        "<pre style=\"border: 0; "
+        "font-family: Consolas, Menlo, &quot;"
+        "Liberation Mono&quot;, Courier, monospace; "
+        "line-height: 1.2; margin: 0; padding: 0.5em;"
+        "white-space: normal; width: auto\">"
+        "%s"
+        "</pre>"
+        "</td>", buf);
+  return html;
+}
 
 gchar *sylpf_search_matched_string(gchar *text, const gchar *pattern, gint ref, gchar *marker)
 {
