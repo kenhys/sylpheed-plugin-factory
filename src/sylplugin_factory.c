@@ -572,6 +572,10 @@ static GList *get_modified_files_list(gchar **lines, gint *n_lines)
   }
   *n_lines = index;
 
+  for (index = 0; index < g_list_length(modified); index++) {
+    data = g_list_nth_data(modified, index);
+    g_print("modified[%d] => %d\n", index, GPOINTER_TO_INT(data));
+  }
   SYLPF_RETURN_VALUE(modified);
 }
 
@@ -805,6 +809,10 @@ static gchar *get_source_html(gint line_no, gchar **lines, gint start, gint end)
   const gchar *style_deleted = "background-color: #ffaaaa; color: #000000; display: block; white-space: pre";
 
   buf = "";
+  SYLPF_DEBUG_STR("source start", lines[start]);
+  SYLPF_DEBUG_STR("source end", lines[end]);
+  SYLPF_DEBUG_VAL("source start index", start);
+  SYLPF_DEBUG_VAL("source end index", end);
   for (index = start; index <= end; index++) {
     line = lines[index];
     SYLPF_DEBUG_STR("line", line);
