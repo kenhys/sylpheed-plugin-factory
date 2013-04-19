@@ -30,9 +30,11 @@ static gchar *get_date_from_commit_mail(gchar *text);
 static gchar *get_gitcommitmailer_diff(gchar *text);
 static GList *get_modified_files_list(gchar **lines, gint *n_lines);
 static gchar *get_thead_html(GMatchInfo *match_info);
-static gchar *get_tbody_html(GList *modified, gint index, gchar **lines, gint n_lines);
-static gchar *get_src_line_no_html(GList *modified, gint index, gchar **lines, gint n_lines);
-static gchar *get_dest_line_no_html(GList *modified, gint index, gchar **lines, gint n_lines);
+static gchar *get_tbody_html(SylpfGitCommitMailerInfo *info);
+static gchar *get_src_line_no_html(gint line_no, gchar **lines, gint start, gint end);
+static gchar *get_dest_line_no_html(gint line_no, gchar **lines, gint start, gint end);
+static gchar *get_line_no_html(gint line_no, gchar **lines, gint start, gint end,
+                               gchar *src_mark, gchar *dest_mark);
 
 void sylpf_log_handler(const gchar *log_domain,
                        GLogLevelFlags log_level,
@@ -548,15 +550,18 @@ static GList *get_modified_files_list(gchar **lines, gint *n_lines)
   modified = g_list_alloc();
   index = 0;
   while (lines[index]) {
+    SYLPF_DEBUG_STR("is modified line?", lines[index]);
     if (g_str_has_prefix(lines[index], "  Modified:")) {
-      if (lines[index] != NULL &&
-          lines[index + 1] != NULL &&
+      if (lines[index + 1] != NULL &&
           lines[index + 2] != NULL &&
           lines[index + 3] != NULL &&
-          g_str_has_prefix(lines[index], "===") &&
-          g_str_has_prefix(lines[index], "---") &&
-          g_str_has_prefix(lines[index], "+++") &&
-          g_str_has_prefix(lines[index], "@@ ")) {
+          lines[index + 4] != NULL &&
+          g_str_has_prefix(lines[index + 1], "===") &&
+          g_str_has_prefix(lines[index + 2], "---") &&
+          g_str_has_prefix(lines[index + 3], "+++") &&
+          g_str_has_prefix(lines[index + 4], "@@ ")) {
+        SYLPF_DEBUG_STR("check modified line", lines[index]);
+        SYLPF_DEBUG_VAL("check modified line index", index);
         modified = g_list_append(modified, GINT_TO_POINTER(index));
       }
     }
@@ -604,40 +609,53 @@ static gchar *get_thead_html(GMatchInfo *match_info)
   return html;
 }
 
-static gchar *get_tbody_html(GList *modified, gint index, gchar **lines, gint n_lines)
+static gchar *get_tbody_html(SylpfGitCommitMailerInfo *info)
 {
   gpointer value;
   gchar *line;
-  gint offset;
-  gint base_no;
-  gint src_no;
-  gint dest_no;
+  gint line_no;
   gint column_no;
   gchar *src_no_html;
   gchar *dest_no_html;
   gchar *source_html;
   gchar *html;
-
+  gint start;
+  gint end;
+  
   SYLPF_START_FUNC;
 
-  value = g_list_nth_data(modified, index);
-  offset = GPOINTER_TO_INT(value);
-  line = lines[offset + 4];
-  base_no = g_strtod(&line[4], NULL);
-  src_no = base_no;
-  dest_no = base_no;
-  g_print ("Found: %d\n", src_no);
+  value = g_list_nth_data(info->modified, info->modified_index);
+  start = GPOINTER_TO_INT(value);
+  line = info->lines[start + 4];
+  line_no = g_strtod(&line[4], NULL);
+  SYLPF_DEBUG_VAL("start line no", start);
+  SYLPF_DEBUG_VAL("line no", line_no);
+  info->line_no = line_no;
+  if (info->modified_index == g_list_length(info->modified) - 1) {
+    end = info->n_lines - 1;
+    SYLPF_DEBUG_VAL("last modified end", end);
+  } else {
+    value = g_list_nth_data(info->modified, info->modified_index + 1);
+    end = GPOINTER_TO_INT(value) - 1;
+    SYLPF_DEBUG_VAL("intermediate modified end", end);
+  }
+  SYLPF_DEBUG_VAL("end index", end);
 
+  dest_no_html = "";
+  src_no_html = "";
   for (column_no = 0; column_no < N_COLUMNS; column_no++) {
     switch (column_no) {
     case 0:
-      src_no_html = get_src_line_no_html(modified, index, lines, n_lines);
+      src_no_html = get_src_line_no_html(line_no, info->lines, start, end);
       break;
     case 1:
-      dest_no_html = get_dest_line_no_html(modified, index, lines, n_lines);
+      dest_no_html = get_dest_line_no_html(line_no, info->lines, start, end);
+      g_print("dest_no_html:|%s|\n", dest_no_html);
       break;
     default:
       source_html = "";
+      //get_source_html(line_no, info->lines, start, end);
+      break;
     }
   }
   html = g_strdup_printf("<tbody>"
@@ -661,6 +679,8 @@ static gchar *get_gitcommitmailer_diff(gchar *text)
   gint n_lines;
   gint n_modified;
   GList *modified_list;
+  SylpfGitCommitMailerInfo info;
+
 #if GTK_CHECK_VERSION(2, 14, 0)
   GRegex *regex;
   GMatchInfo *match_info;
@@ -676,16 +696,20 @@ static gchar *get_gitcommitmailer_diff(gchar *text)
 
   n_lines = 0;
   modified_list = get_modified_files_list(lines, &n_lines);
-  n_modified = g_list_length(modified_list);
   
 #if GTK_CHECK_VERSION(2, 14, 0)
   regex = g_regex_new(pattern_modified, 0, 0, NULL);
   g_regex_match(regex, text, 0, &match_info);
+  n_modified = 0;
   while (g_match_info_matches(match_info)) {
 
     thead = get_thead_html(match_info);
 
-    tbody = get_tbody_html(modified_list, n_modified, lines, n_lines);
+    info.modified = modified_list;
+    info.modified_index = n_modified;
+    info.lines = lines;
+    info.n_lines = n_lines;
+    tbody = get_tbody_html(&info);
 
     html = g_strdup_printf("%s<table style=\"border-collapse: collapse;"
                            "border: 1px solid #aaa\">"
@@ -708,44 +732,67 @@ static gchar *get_gitcommitmailer_diff(gchar *text)
   SYLPF_RETURN_VALUE(html);
 } 
 
-static gchar *get_src_line_no_html(GList *modified, gint index, gchar **lines, gint n_lines)
+static gchar *get_src_line_no_html(gint line_no, gchar **lines, gint start, gint end)
 {
-  gchar *html;
-  html = "";
-  return html;
+  return get_line_no_html(line_no, lines, start, end, "+", "-");
 }
 
-static gchar *get_dest_line_no_html(GList *modified, gint index, gchar **lines, gint n_lines)
+static gchar *get_dest_line_no_html(gint line_no, gchar **lines, gint start, gint end)
 {
-  gint n_modified;
-  gpointer value;
+  return get_line_no_html(line_no, lines, start, end, "-", "+");
+}
+
+static gchar *get_line_no_html(gint line_no, gchar **lines, gint start, gint end,
+    gchar *src_mark, gchar *dest_mark)
+{
   gchar *line;
+  gint base_no;
   gint src_no;
   gint dest_no;
+  gint index;
   gchar *html;
-  
-  html = "";
-  n_modified = 0;
-  src_no = 0;
-  dest_no = 0;
-  while (index < n_lines) {
-    if (n_modified < g_list_length(modified) - 1) {
-      value = g_list_nth_data(modified, n_modified + 1);
-      if (index < GPOINTER_TO_INT(value)) {
-        line = lines[index];
-        if (line[0] == '-') {
-          src_no++;
-        } else if (line[0] == '+') {
-          dest_no++;
-        } else {
-        }
-      }
+  gchar *html_body;
+  gchar *html_pre;
+  gchar *html_post;
+  const gchar *line_added_style = "background-color: #aaffaa; color: #000000; display: block; white-space: pre";
+    
+  html_pre = "<th class=\"diff-line-number\" style=\"border: 1px solid #aaa\">"
+    "<pre style=\"border: 0; font-family: Consolas, Menlo, &quot;"
+    "Liberation Mono&quot;, Courier, monospace; line-height: 1.2;"
+    " margin: 0; padding: 0.5em; white-space: normal; width: auto\">";
+  html_post = "</pre></th>";
+  src_no = line_no;
+  dest_no = line_no;
+  html_body = "";
+  SYLPF_DEBUG_VAL("line start", start);
+  SYLPF_DEBUG_VAL("line end", end);
+  for (index = start; index <= end; index++) {
+    line = lines[index];
+    SYLPF_DEBUG_STR("line", line);
+    if (g_str_has_prefix(line, "@@")) {
+      base_no = g_strtod(&line[4], NULL);
+      src_no = dest_no = base_no;
+      
+      html_body = g_strdup_printf("%s<span class=\"%s\" style=\"%s\">...</span>",
+    html_body, "diff-line-number-hunk-header", "display: block; white-space: pre");
+    } else if (g_str_has_prefix(line, dest_mark)) {
+      dest_no++;
+      html_body = g_strdup_printf("%s<span class=\"%s\" style=\"%s\">%d</span>",
+      html_body, "diff-line-number-added", line_added_style, dest_no);
+    } else if (g_str_has_prefix(line, src_mark)) {
+      src_no++;
+      html_body = g_strdup_printf("%s<span class=\"%s\" style=\"%s\">&nbsp;</span>",
+    html_body, "diff-line-number-nothing", "display: block; white-space: pre");
+    } else {
+      src_no++;
+      dest_no++;
+      html_body = g_strdup_printf("%s<span class=\"%s\" style=\"%s\">%d</span>",
+      html_body, "diff-line-number-not-changed", "display: block; white-space: pre", dest_no);
     }
-    index++;
   }
+  html = g_strdup_printf("%s%s%s", html_pre, html_body, html_post);
   return html;
 }
-
   
 
 gchar *sylpf_search_matched_string(gchar *text, const gchar *pattern, gint ref, gchar *marker)
