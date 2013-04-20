@@ -761,7 +761,11 @@ static gchar *get_line_no_html(gint line_no, gchar **lines, gint start, gint end
   gchar *html_post;
   const gchar *line_added_style = "background-color: #aaffaa; color: #000000; display: block; white-space: pre";
   const gchar *line_nothing_style = "display: block; white-space: pre";
+  const gchar *line_deleted_style = "background-color: #ffaaaa; color: #000000; display: block; white-space: pre";
   
+  gchar *dest_mark_class;
+  gchar *dest_mark_style;
+
   html_pre = "<th class=\"diff-line-number\" style=\"border: 1px solid #aaa\">"
     "<pre style=\"border: 0; font-family: Consolas, Menlo, &quot;"
     "Liberation Mono&quot;, Courier, monospace; line-height: 1.2;"
