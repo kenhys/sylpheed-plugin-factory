@@ -760,7 +760,8 @@ static gchar *get_line_no_html(gint line_no, gchar **lines, gint start, gint end
   gchar *html_pre;
   gchar *html_post;
   const gchar *line_added_style = "background-color: #aaffaa; color: #000000; display: block; white-space: pre";
-    
+  const gchar *line_nothing_style = "display: block; white-space: pre";
+  
   html_pre = "<th class=\"diff-line-number\" style=\"border: 1px solid #aaa\">"
     "<pre style=\"border: 0; font-family: Consolas, Menlo, &quot;"
     "Liberation Mono&quot;, Courier, monospace; line-height: 1.2;"
@@ -787,7 +788,7 @@ static gchar *get_line_no_html(gint line_no, gchar **lines, gint start, gint end
     } else if (g_str_has_prefix(line, src_mark)) {
       src_no++;
       html_body = g_strdup_printf("%s<span class=\"%s\" style=\"%s\">&nbsp;</span>",
-    html_body, "diff-line-number-nothing", "display: block; white-space: pre");
+    html_body, "diff-line-number-nothing", line_nothing_style);
     } else {
       src_no++;
       dest_no++;
