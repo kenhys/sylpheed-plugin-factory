@@ -763,8 +763,8 @@ static gchar *get_line_no_html(gint line_no, gchar **lines, gint start, gint end
   const gchar *line_nothing_style = "display: block; white-space: pre";
   const gchar *line_deleted_style = "background-color: #ffaaaa; color: #000000; display: block; white-space: pre";
   
-  gchar *dest_mark_class;
-  gchar *dest_mark_style;
+  const gchar *dest_mark_class;
+  const gchar *dest_mark_style;
 
   html_pre = "<th class=\"diff-line-number\" style=\"border: 1px solid #aaa\">"
     "<pre style=\"border: 0; font-family: Consolas, Menlo, &quot;"
@@ -776,6 +776,17 @@ static gchar *get_line_no_html(gint line_no, gchar **lines, gint start, gint end
   html_body = "";
   SYLPF_DEBUG_VAL("line start", start);
   SYLPF_DEBUG_VAL("line end", end);
+
+  dest_mark_class = "";
+  dest_mark_style = "";
+  if (g_str_has_prefix(dest_mark, "+")) {
+    dest_mark_class = "diff-line-number-added";
+    dest_mark_style = line_added_style;
+  } else {
+    dest_mark_class = "diff-line-number-deleted";
+    dest_mark_style = line_deleted_style;
+  }
+
   for (index = start; index <= end; index++) {
     line = lines[index];
     SYLPF_DEBUG_STR("line", line);
@@ -788,7 +799,7 @@ static gchar *get_line_no_html(gint line_no, gchar **lines, gint start, gint end
     } else if (g_str_has_prefix(line, dest_mark)) {
       dest_no++;
       html_body = g_strdup_printf("%s<span class=\"%s\" style=\"%s\">%d</span>",
-      html_body, "diff-line-number-added", line_added_style, dest_no);
+      html_body, dest_mark_class, dest_mark_style, dest_no);
     } else if (g_str_has_prefix(line, src_mark)) {
       src_no++;
       html_body = g_strdup_printf("%s<span class=\"%s\" style=\"%s\">&nbsp;</span>",
