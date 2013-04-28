@@ -150,6 +150,7 @@ gchar *sylpf_get_repo_name_from_msginfo(MsgInfo *msginfo);
 gchar *sylpf_get_commit_hash_from_msginfo(MsgInfo *msginfo);
 gchar *sylpf_search_matched_string(gchar *text, const gchar *pattern,
                                    gint ref, gchar *marker);
+gboolean sylpf_save_option_rcfile(SylPluginFactoryOption *option);
 
 
 #endif

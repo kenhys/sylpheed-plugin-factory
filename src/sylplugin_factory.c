@@ -1048,7 +1048,5 @@ gboolean sylpf_save_option_rcfile(SylPluginFactoryOption *option)
   buf = g_key_file_to_data(option->rcfile, &sz, NULL);
   status = g_file_set_contents(option->rcpath, buf, sz, NULL);
 
-  g_key_file_free(option->rcfile);
-
   SYLPF_RETURN_VALUE(status);
 }
