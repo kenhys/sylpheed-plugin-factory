@@ -587,6 +587,8 @@ static gchar *get_thead_html(GMatchInfo *match_info)
   gchar *added;
   gchar *deleted;
 
+  SYLPF_START_FUNC;
+
   match = g_match_info_fetch(match_info, 1);
   added = g_match_info_fetch(match_info, 2);
   deleted = g_match_info_fetch(match_info, 3);
@@ -613,7 +615,7 @@ static gchar *get_thead_html(GMatchInfo *match_info)
                          "</tr>"
                          "</thead>",
                          match, added, deleted);
-  return html;
+  SYLPF_RETURN_VALUE(html);
 }
 
 static gchar *get_tbody_html(SylpfGitCommitMailerInfo *info)
