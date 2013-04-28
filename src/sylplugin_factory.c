@@ -701,7 +701,11 @@ static gchar *get_gitcommitmailer_diff(gchar *text)
 
   n_lines = 0;
   modified_list = get_modified_files_list(lines, &n_lines);
-  
+
+  if (g_list_length(modified_list) == 0) {
+    return text;
+  }
+
 #if GTK_CHECK_VERSION(2, 14, 0)
   regex = g_regex_new(pattern_modified, 0, 0, NULL);
   g_regex_match(regex, text, 0, &match_info);
