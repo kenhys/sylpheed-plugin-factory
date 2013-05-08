@@ -539,8 +539,8 @@ static gchar *get_gitcommitmailer_summary(gchar *text)
                          dt_style, author, "<@example.com>",
                          dt_style, date,
                          dt_style, revision,
-                         dt_style, pre_style, message,
-                         dt_style, files);
+                         dt_style, pre_style, message ? message : "",
+                         dt_style, files ? files : "");
   SYLPF_RETURN_VALUE(html);
 }
 
