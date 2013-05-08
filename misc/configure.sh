@@ -6,5 +6,8 @@ fi
 if [ -n "$USE_GTKHTML" ]; then
     OPTIONS="$OPTIONS --enable-gtkhtml"
 fi
+if [ -n "$USE_DEBUG" ]; then
+    OPTIONS="$OPTIONS --enable-debug"
+fi
 
 ./configure $OPTIONS
