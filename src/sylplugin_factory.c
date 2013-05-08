@@ -475,6 +475,8 @@ static gchar *extract_pair_text(gchar *text, gchar *key, gchar *marker)
 
   marker = g_strstr_len(item, -1, marker);
   
+  g_return_val_if_fail(marker, NULL);
+
   SYLPF_RETURN_VALUE(g_strndup(item, marker-item));
 }
 
