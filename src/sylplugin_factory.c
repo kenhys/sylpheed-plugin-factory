@@ -489,9 +489,10 @@ gchar *sylpf_format_gitcommitmailer_text(gchar *text)
   summary = get_gitcommitmailer_summary(text);
   body = get_gitcommitmailer_diff(text);
   html = g_strconcat(summary, body, NULL);
+#if 0
   g_free(summary);
   g_free(body);
-
+#endif
   SYLPF_RETURN_VALUE(html);
 }
 
