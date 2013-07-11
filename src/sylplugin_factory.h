@@ -97,6 +97,12 @@ struct _SylpfGitCommitMailerInfo {
 #define SYLPF_GET_RC_MESSAGE_FONT_NAME \
   sylpf_get_rc_string(SYLPF_SYLPHEED_RC, "Common", "message_font_name")
 
+#define SYLPF_BOX_PACKS(widget, child, expand, fill, space) \
+  gtk_box_pack_start(GTK_BOX(widget), child, expand, fill, space)
+
+#define SYLPF_BOX_PACKE(widget, child, expand, fill, space) \
+  gtk_box_pack_end(GTK_BOX(widget), child, expand, fill, space)
+
 guint sylpf_init_logger(const gchar *log_domain,
                         GLogLevelFlags log_levels,
                         GLogFunc log_func,
