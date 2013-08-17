@@ -162,5 +162,10 @@ void sypf_setup_plugin_onoff_switch(SylPluginFactoryOption *option,
                                     GCallback callback_func,
                                     const char **on_xpm,
                                     const char **off_xpm);
+void sylpf_update_plugin_onoff_status(SylPluginFactoryOption *option,
+                                      gboolean onoff,
+                                      const char *title,
+                                      const char *message,
+                                      const char *tooltip);
 
 #endif
