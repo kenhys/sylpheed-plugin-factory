@@ -158,5 +158,9 @@ gchar *sylpf_search_matched_string(gchar *text, const gchar *pattern,
                                    gint ref, gchar *marker);
 gboolean sylpf_save_option_rcfile(SylPluginFactoryOption *option);
 
+void sypf_setup_plugin_onoff_switch(SylPluginFactoryOption *option,
+                                    GCallback callback_func,
+                                    const char **on_xpm,
+                                    const char **off_xpm);
 
 #endif
