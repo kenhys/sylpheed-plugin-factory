@@ -915,7 +915,7 @@ static gchar *get_revision_from_commit_mail(gchar *text)
 
 static gchar *get_date_from_commit_mail(gchar *text)
 {
-  gchar *date;
+  gchar *date = NULL;
   const gchar *pattern = "\\s(\\d+-\\d+-\\d+\\s\\d+:\\d+:\\d+\\s\\+\\d+\\s\\(\\w+,\\s\\d+\\s\\w+\\s\\d+\\))";
 
   SYLPF_START_FUNC;
