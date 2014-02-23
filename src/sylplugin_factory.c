@@ -895,7 +895,7 @@ gchar *sylpf_search_matched_string(gchar *text, const gchar *pattern, gint ref, 
 
 static gchar *get_revision_from_commit_mail(gchar *text)
 {
-  gchar *revision;
+  gchar *revision = NULL;
   const gchar *pattern = "New Revision: (.+)";
 #if GTK_CHECK_VERSION(2, 14, 0)
 #else
@@ -935,7 +935,7 @@ static gchar *get_author_from_commit_mail(gchar *text)
 #if GTK_CHECK_VERSION(2, 14, 0)
   const gchar *pattern = "(.+)\\s\\d+-\\d+-\\d+\\s\\d+:\\d+:\\d+\\s\\+\\d+\\s\\(\\w+,\\s\\d+\\s\\w+\\s\\d+\\)";
 #endif
-  gchar *author;
+  gchar *author = NULL;
   
   SYLPF_START_FUNC;
 
