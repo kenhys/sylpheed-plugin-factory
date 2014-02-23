@@ -20,6 +20,7 @@ if test "$GCC" = "yes"; then
   if test "x$check_cflag" = "xno"; then
     CHECK_CFLAG([-W])
   fi
+  CHECK_CFLAG([-Werror=unused-variable])
   CHECK_CFLAG([-Wno-unused-but-set-variable]) # FIXME: enable it.
   CHECK_CFLAG([-Wno-unused-parameter])
   CHECK_CFLAG([-Wno-unused-function])
