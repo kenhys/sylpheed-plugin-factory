@@ -22,6 +22,7 @@ if test "$GCC" = "yes"; then
   fi
   CHECK_CFLAG([-Wno-unused-but-set-variable]) # FIXME: enable it.
   CHECK_CFLAG([-Wno-unused-parameter])
+  CHECK_CFLAG([-Wno-unused-function])
   CHECK_CFLAG([-Wno-sign-compare])
   CHECK_CFLAG([-Wno-pointer-sign])
   CHECK_CFLAG([-Wno-missing-field-initializers])
