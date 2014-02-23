@@ -896,8 +896,8 @@ gchar *sylpf_search_matched_string(gchar *text, const gchar *pattern, gint ref, 
 static gchar *get_revision_from_commit_mail(gchar *text)
 {
   gchar *revision = NULL;
-  const gchar *pattern = "New Revision: (.+)";
 #if GTK_CHECK_VERSION(2, 14, 0)
+  const gchar *pattern = "New Revision: (.+)";
 #else
 #endif
 
