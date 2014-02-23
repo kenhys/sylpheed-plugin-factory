@@ -253,10 +253,10 @@ void sylpf_setup_plugin_onoff_switch(SylPluginFactoryOption *option,
 void sylpf_init_gettext(const gchar *package,
                         const gchar *dir_name)
 {
-  GSList *modules = NULL;
-
 #ifdef G_OS_WIN32
 #else
+  GSList *modules = NULL;
+
   debug_print("[DEBUG] get_startup_dir:%s\n", get_startup_dir());
   modules = syl_plugin_get_module_list();
   if (g_path_is_absolute(dir_name)) {
@@ -680,16 +680,18 @@ static gchar *get_tbody_html(SylpfGitCommitMailerInfo *info)
 static gchar *get_gitcommitmailer_diff(gchar *text)
 {
   gchar *html = "<div class=\"diff-section\" style=\"clear: both\">";
+#if GTK_CHECK_VERSION(2, 14, 0)
   gchar *pattern_modified = "  Modified: (.+)\\s\\(\\+(\\d+)\\s-(\\d+)\\)";
-  gchar *modified;
-  gchar *match;
   gchar *thead;
   gchar *tbody;
+  gint n_modified;
+  SylpfGitCommitMailerInfo info;
+#endif
+  gchar *modified;
+  gchar *match;
   gchar **lines;
   gint n_lines;
-  gint n_modified;
   GList *modified_list;
-  SylpfGitCommitMailerInfo info;
 
 #if GTK_CHECK_VERSION(2, 14, 0)
   GRegex *regex;
