@@ -916,7 +916,9 @@ static gchar *get_revision_from_commit_mail(gchar *text)
 static gchar *get_date_from_commit_mail(gchar *text)
 {
   gchar *date = NULL;
+#if GTK_CHECK_VERSION(2, 14, 0)
   const gchar *pattern = "\\s(\\d+-\\d+-\\d+\\s\\d+:\\d+:\\d+\\s\\+\\d+\\s\\(\\w+,\\s\\d+\\s\\w+\\s\\d+\\))";
+#endif
 
   SYLPF_START_FUNC;
 
@@ -930,7 +932,9 @@ static gchar *get_date_from_commit_mail(gchar *text)
 
 static gchar *get_author_from_commit_mail(gchar *text)
 {
+#if GTK_CHECK_VERSION(2, 14, 0)
   const gchar *pattern = "(.+)\\s\\d+-\\d+-\\d+\\s\\d+:\\d+:\\d+\\s\\+\\d+\\s\\(\\w+,\\s\\d+\\s\\w+\\s\\d+\\)";
+#endif
   gchar *author;
   
   SYLPF_START_FUNC;
