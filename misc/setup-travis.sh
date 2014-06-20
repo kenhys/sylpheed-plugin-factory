@@ -29,6 +29,7 @@ sudo apt-get update -qq
 sudo apt-get install -qq libwebkitgtk-dev libonig-dev
 sudo apt-get install -qq libgtkhtml3.14-dev
 sudo apt-get install -qq intltool
+sudo apt-get install -qq libgpgme11-dev
 
 BASE_URL=http://sylpheed.sraoss.jp/sylpheed
 if [ "$SYLPHEED_STAGE"  = "master" ]; then
