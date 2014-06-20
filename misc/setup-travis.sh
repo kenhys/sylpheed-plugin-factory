@@ -30,24 +30,30 @@ sudo apt-get install -qq libwebkitgtk-dev libonig-dev
 sudo apt-get install -qq libgtkhtml3.14-dev
 sudo apt-get install -qq intltool
 
-case "$SYLPHEED_STAGE" in
-    master|head)
-	run svn checkout svn://sylpheed.sraoss.jp/sylpheed/trunk sylpheed
-	(cd sylpheed && ./autogen.sh && ./configure --prefix=/usr && make && sudo make install)
-	;;
-    3.4.0|3.4|beta)
-	run wget http://sylpheed.sraoss.jp/sylpheed/v3.4beta/sylpheed-3.4.0beta3.tar.bz2
-	run tar ixf sylpheed-3.4.0beta3.tar.bz2
-	run ln -sf sylpheed-3.4.0beta3 sylpheed
-	(cd sylpheed-3.4.0beta3; ./configure --prefix=/usr; make; sudo make install)
-	;;
-    3.3.0|3.3|stable|*)
-	run wget http://sylpheed.sraoss.jp/sylpheed/v3.3/sylpheed-3.3.0.tar.bz2
-	run tar ixf sylpheed-3.3.0.tar.bz2
-	run ln -sf sylpheed-3.3.0 sylpheed
-	(cd sylpheed-3.3.0 && ./configure --prefix=/usr && make && sudo make install)
-	;;
-esac
+BASE_URL=http://sylpheed.sraoss.jp/sylpheed
+if [ "$SYLPHEED_STAGE"  = "master" ]; then
+    run svn checkout svn://sylpheed.sraoss.jp/sylpheed/trunk sylpheed
+    (cd sylpheed && ./autogen.sh && ./configure --prefix=/usr && make && sudo make install)
+else
+    VERSION=
+    case "$SYLPHEED_STAGE" in
+	3.3)
+	    VERSION=3.3.1
+	    run wget $BASE_URL/v3.3/sylpheed-$VERSION.tar.bz2
+	    ;;
+	3.4)
+	    VERSION=3.4.2
+	    run wget $BASE_URL/v3.4/sylpheed-$VERSION.tar.bz2
+	    ;;
+	3.5|beta|*)
+	    VERSION=3.5.0beta1
+	    run wget $BASE_URL/v3.5/sylpheed-$VERSION.tar.bz2
+	    ;;
+    esac
+    run tar ixf sylpheed-$VERSION.tar.bz2
+    run ln -sf sylpheed-$VERSION sylpheed
+    (cd sylpheed; ./configure --prefix=/usr; make; sudo make install)
+fi
 
 if [ "$USE_SYLFILTER" = "yes" ]; then
     wget http://sylpheed.sraoss.jp/sylfilter/src/sylfilter-0.8.tar.gz
