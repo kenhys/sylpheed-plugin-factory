@@ -33,7 +33,9 @@ static gchar *get_author_from_commit_mail(gchar *text);
 static gchar *get_date_from_commit_mail(gchar *text);
 static gchar *get_gitcommitmailer_diff(gchar *text);
 static GList *get_modified_files_list(gchar **lines, gint *n_lines);
+#if GTK_CHECK_VERSION(2, 14, 0)
 static gchar *get_thead_html(GMatchInfo *match_info);
+#endif
 static gchar *get_tbody_html(SylpfGitCommitMailerInfo *info);
 static gchar *get_src_line_no_html(gint line_no, gchar **lines, gint start, gint end);
 static gchar *get_dest_line_no_html(gint line_no, gchar **lines, gint start, gint end);
@@ -586,6 +588,7 @@ static GList *get_modified_files_list(gchar **lines, gint *n_lines)
   SYLPF_RETURN_VALUE(modified);
 }
 
+#if GTK_CHECK_VERSION(2, 14, 0)
 #define N_COLUMNS 3
 static gchar *get_thead_html(GMatchInfo *match_info)
 {
@@ -624,6 +627,7 @@ static gchar *get_thead_html(GMatchInfo *match_info)
                          match, added, deleted);
   SYLPF_RETURN_VALUE(html);
 }
+#endif
 
 static gchar *get_tbody_html(SylpfGitCommitMailerInfo *info)
 {
