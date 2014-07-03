@@ -33,7 +33,7 @@ static gchar *get_author_from_commit_mail(gchar *text);
 static gchar *get_date_from_commit_mail(gchar *text);
 static gchar *get_gitcommitmailer_diff(gchar *text);
 static GList *get_modified_files_list(gchar **lines, gint *n_lines);
-#if GTK_CHECK_VERSION(2, 14, 0)
+#if GLIB_CHECK_VERSION(2, 14, 0)
 static gchar *get_thead_html(GMatchInfo *match_info);
 #endif
 static gchar *get_tbody_html(SylpfGitCommitMailerInfo *info);
@@ -588,7 +588,7 @@ static GList *get_modified_files_list(gchar **lines, gint *n_lines)
   SYLPF_RETURN_VALUE(modified);
 }
 
-#if GTK_CHECK_VERSION(2, 14, 0)
+#if GLIB_CHECK_VERSION(2, 14, 0)
 #define N_COLUMNS 3
 static gchar *get_thead_html(GMatchInfo *match_info)
 {
@@ -701,7 +701,7 @@ static gchar *get_gitcommitmailer_diff(gchar *text)
   gint n_lines;
   GList *modified_list;
 
-#if GTK_CHECK_VERSION(2, 14, 0)
+#if GLIB_CHECK_VERSION(2, 14, 0)
   GRegex *regex;
   GMatchInfo *match_info;
 #else
@@ -721,7 +721,7 @@ static gchar *get_gitcommitmailer_diff(gchar *text)
     return text;
   }
 
-#if GTK_CHECK_VERSION(2, 14, 0)
+#if GLIB_CHECK_VERSION(2, 14, 0)
   regex = g_regex_new(pattern_modified, 0, 0, NULL);
   g_regex_match(regex, text, 0, &match_info);
   n_modified = 0;
@@ -878,7 +878,7 @@ static gchar *get_source_html(gint line_no, gchar **lines, gint start, gint end)
 gchar *sylpf_search_matched_string(gchar *text, const gchar *pattern, gint ref, gchar *marker)
 {
   gchar *match;
-#if GTK_CHECK_VERSION(2, 14, 0)
+#if GLIB_CHECK_VERSION(2, 14, 0)
   GRegex *regex;
   GMatchInfo *match_info;
 #else
