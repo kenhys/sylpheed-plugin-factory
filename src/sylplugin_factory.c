@@ -588,8 +588,9 @@ static GList *get_modified_files_list(gchar **lines, gint *n_lines)
   SYLPF_RETURN_VALUE(modified);
 }
 
-#if GLIB_CHECK_VERSION(2, 14, 0)
 #define N_COLUMNS 3
+
+#if GLIB_CHECK_VERSION(2, 14, 0)
 static gchar *get_thead_html(GMatchInfo *match_info)
 {
   gchar *html;
