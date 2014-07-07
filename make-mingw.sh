@@ -113,7 +113,7 @@ function make_release() {
 	mv src/$DLL_FILE .
     fi
     ZIP_FILE=sylpheed-$PKG_NAME-${version}.zip
-    zip  $DLL_FILE
+    zip $ZIP_FILE $DLL_FILE
     zip_archive $ZIP_FILE '*.txt'
     zip_archive $ZIP_FILE '*.h'
     zip_archive $ZIP_FILE '*.c'
