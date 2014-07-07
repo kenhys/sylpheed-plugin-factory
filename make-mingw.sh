@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -x
+
 PKG_NAME=
 DLL_FILE=
 OBJS=
