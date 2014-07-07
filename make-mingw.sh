@@ -72,7 +72,7 @@ function make_res() {
 function compile() {
     make_res
 
-    for src in `find . -name '*.c'`; do
+    for src in `find . -path './test' -prune -o -name '*.c'`; do
 	src_base=${src%%.c}
 	run gcc -Wall -c -o ${src_base}.o $DEF $INC ${src}
     done
