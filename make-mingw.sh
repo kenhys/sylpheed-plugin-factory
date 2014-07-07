@@ -70,6 +70,9 @@ function make_res() {
 
 
 function make_dll() {
+    PKG_NAME=$1
+    DLL_FILE=$2
+
     make_res
 
     for src in `find . -path './test' -prune -o -name '*.c'`; do
@@ -127,7 +130,7 @@ fi
 while [ $# -ne 0 ]; do
     case "$1" in
 	-h|--help) usage && exit 0;;
-        --build) make_dll; shift;;
+        --build) make_dll $PKG_NAME $DLL_FILE; shift;;
 	--po)   make_po; shift;;
 	--dclean) make_distclean; shift;;
 	--clean) make_clean; shift;;
