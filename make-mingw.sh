@@ -69,7 +69,7 @@ function make_res() {
 }
 
 
-function compile() {
+function make_dll() {
     make_res
 
     for src in `find . -path './test' -prune -o -name '*.c'`; do
@@ -127,7 +127,7 @@ fi
 while [ $# -ne 0 ]; do
     case "$1" in
 	-h|--help) usage && exit 0;;
-        --compile) compile; shift;;
+        --build) make_dll; shift;;
 	--po)   make_po; shift;;
 	--dclean) make_distclean; shift;;
 	--clean) make_clean; shift;;
