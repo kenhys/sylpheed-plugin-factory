@@ -80,7 +80,7 @@ function compile() {
     OBJS=`find . -name '*.o'`
     run gcc -shared -o $DLL_FILE $OBJS -L./lib $LIBSYLPH $LIBSYLPHEED $LIBS -lws2_32 -liconv
     if [ -d "$SYLPLUGINDIR" ]; then
-        com="cp $TARGET \"$SYLPLUGINDIR/$DLL_FILE\""
+        com="cp $DLL_FILE \"$SYLPLUGINDIR/$DLL_FILE\""
         echo $com
         eval $com
     else
