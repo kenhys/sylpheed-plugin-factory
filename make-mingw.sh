@@ -80,7 +80,7 @@ function make_dll() {
 	run gcc -Wall -c -o ${src_base}.o $DEF $INC ${src}
     done
 
-    OBJS=`find . -name '*.o'`
+    OBJS=`find . -path './test' -prune -o -name '*.o'`
     run gcc -shared -o $DLL_FILE $OBJS -L./lib $LIBSYLPH $LIBSYLPHEED $LIBS -lws2_32 -liconv
     if [ -d "$SYLPLUGINDIR" ]; then
         com="cp $DLL_FILE \"$SYLPLUGINDIR/$DLL_FILE\""
