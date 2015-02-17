@@ -9,7 +9,7 @@ sylplugin_factory_la_SOURCES = \
 sylplugin_factory_la_LDFLAGS = -module -no-undefined -avoid-version
 
 
-INCLUDES = \
+AM_CPPFLAGS = \
 	$(GTK_CFLAGS) \
 	-I$(includedir) \
 	-I$(sylpheed_build_dir)/libsylph \
