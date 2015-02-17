@@ -40,6 +40,7 @@ AC_DEFINE([BUILD_SYLPLUGIN_FACTORY_STANDALONE], [], [standalone build])
 m4_include(m4/sylplugin_factory.m4)
 
 AC_CONFIG_FILES([Makefile
+                 libsylplugin-factory.pc
                  src/Makefile])
 AC_OUTPUT
 

@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: libsylplugin-factory
+Description: Utility library to implement Sylpheed plugin easily
+Version: @VERSION@
+Libs: -L${libdir} -lsylplugin_factory
+Cflags: -I${includedir}/sylplugin_factory
