@@ -10,7 +10,8 @@ pkgconfig_DATA = libsylplugin-factory.pc
 
 m4datadir = $(datadir)/sylplugin-factory
 m4data_DATA = m4/sylplugin_factory.m4 \
-	      m4/compiler_flag.m4
+	      m4/compiler_flag.m4 \
+	      build/common.mk
 
 include build/common.mk
 
