@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libsylplugin_factory.la
+lib_LTLIBRARIES = libsylplugin-factory.la
 
 libsylplugin_factory_la_SOURCES = \
 	sylplugin_factory.c \

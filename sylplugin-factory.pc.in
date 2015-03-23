@@ -6,5 +6,5 @@ includedir=@includedir@
 Name: sylplugin-factory
 Description: Utility library to implement Sylpheed plugin easily
 Version: @VERSION@
-Libs: -L${libdir} -lsylplugin_factory
-Cflags: -I${includedir}/sylplugin_factory
+Libs: -L${libdir} -lsylplugin-factory
+Cflags: -I${includedir}/sylplugin-factory
