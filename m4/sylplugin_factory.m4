@@ -49,7 +49,7 @@ AC_ARG_WITH(libsylph-impl,
 if test "x$libsylph_impl" = "x"; then
   libsylph_impl_available="no"
 else
-  if test -f "$lisylph_impl"; then
+  if test -f "$libsylph_impl"; then
     libsylph_impl_available="yes"
   fi
 fi
