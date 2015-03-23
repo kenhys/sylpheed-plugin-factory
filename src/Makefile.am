@@ -22,7 +22,7 @@ AM_CPPFLAGS = \
 if WITH_LIBSYLPH_IMPL
 LIBSYLPH_IMPL = $(libsylph_impl)
 else
-LIBSYLPH_IMPL = $(sylpheed_build_dir)/src/libsylph-0.la
+LIBSYLPH_IMPL = $(sylpheed_build_dir)/libsylph/libsylph-0.la
 endif
 
 if WITH_LIBSYLPHEED_IMPL
