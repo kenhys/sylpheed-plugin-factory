@@ -20,5 +20,3 @@ libsylplugin_factory_la_LIBADD = \
 	$(sylpheed_build_dir)/src/libsylpheed-plugin-0.la \
 	$(sylpheed_build_dir)/libsylph/libsylph-0.la
 
-install:
-install-plugin: install-am
