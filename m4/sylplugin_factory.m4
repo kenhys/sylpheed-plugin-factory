@@ -68,4 +68,4 @@ else
   fi
 fi
 AC_SUBST(libsylpheed_impl)
-AM_CONDITIONAL([WITH_LIBSYLHPEED_IMPL], [test "$libsylpheed_impl_available" = "yes"])
+AM_CONDITIONAL([WITH_LIBSYLPHEED_IMPL], [test "$libsylpheed_impl_available" = "yes"])
