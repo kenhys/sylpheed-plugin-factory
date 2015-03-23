@@ -1,10 +1,10 @@
-lib_LTLIBRARIES = sylplugin_factory.la
+lib_LTLIBRARIES = libsylplugin_factory.la
 
-sylplugin_factory_la_SOURCES = \
+libsylplugin_factory_la_SOURCES = \
 	sylplugin_factory.c \
 	sylplugin_factory.h
 
-sylplugin_factory_la_LDFLAGS = -module -no-undefined -avoid-version
+libsylplugin_factory_la_LDFLAGS = -module -no-undefined -avoid-version
 
 
 AM_CPPFLAGS = \
@@ -15,7 +15,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/src
 
-sylplugin_factory_la_LIBADD = \
+libsylplugin_factory_la_LIBADD = \
 	$(GTK_LIBS) \
 	$(sylpheed_build_dir)/src/libsylpheed-plugin-0.la \
 	$(sylpheed_build_dir)/libsylph/libsylph-0.la
