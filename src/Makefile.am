@@ -6,6 +6,10 @@ libsylplugin_factory_la_SOURCES = \
 
 libsylplugin_factory_la_LDFLAGS = -module -no-undefined -avoid-version
 
+sylpluginincludedir = $(includedir)/sylplugin-factory
+sylplugininclude_HEADERS = \
+	sylplugin_factory.h \
+	sylplugin_i18n.h
 
 AM_CPPFLAGS = \
 	$(GTK_CFLAGS) \
