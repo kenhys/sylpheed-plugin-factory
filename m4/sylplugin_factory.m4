@@ -43,11 +43,11 @@ AC_SUBST(sylplugin_factory_source_dir)
 AM_CONDITIONAL([WITH_SYLPLUGIN_FACTORY], [test "$sylpfdir_available" = "yes"])
 
 AC_ARG_WITH(libsylph-impl,
-            [AS_HELP_STRING([--with-libsylph-impl=LIBRARY,
-            [specify libsylph import library(.a))],
+            [AS_HELP_STRING([--with-libsylph-impl=LIBRARY],
+            [specify libsylph import library(.a)])],
             [libsylph_impl="$withval"])
 if test "x$libsylph_impl" = "x"; then
-  :
+  libsylph_impl_available="no"
 else
   if test -f "$lisylph_impl"; then
     libsylph_impl_available="yes"
@@ -57,11 +57,11 @@ AC_SUBST(libsylph_impl)
 AM_CONDITIONAL([WITH_LIBSYLPH_IMPL], [test "$libsylph_impl_available" = "yes"])
 
 AC_ARG_WITH(libsylpheed-impl,
-            [AS_HELP_STRING([--with-libsylpheed-impl=LIBRARY,
-            [specify libsylpheed import library(.a))],
+            [AS_HELP_STRING([--with-libsylpheed-impl=LIBRARY],
+            [specify libsylpheed import library(.a)])],
             [libsylpheed_impl="$withval"])
 if test "x$libsylpheed_impl" = "x"; then
-  :
+  libsylpheed_impl_available="no"
 else
   if test -f "$libsylpheed_impl"; then
     libsylpheed_impl_available="yes"
