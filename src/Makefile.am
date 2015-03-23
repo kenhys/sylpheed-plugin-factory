@@ -19,8 +19,20 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/src
 
+if WITH_LIBSYLPH_IMPL
+LIBSYLPH_IMPL = $(libsylph_impl)
+else
+LIBSYLPH_IMPL = $(sylpheed_build_dir)/src/libsylph-0.la
+endif
+
+if WITH_LIBSYLPHEED_IMPL
+LIBSYLPHEED_IMPL = $(libslpheed_impl)
+else
+LIBSYLPHEED_IMPL = $(sylpheedbuild_dir)/src/libsylpheed-plugin-0.la
+endif
+
 libsylplugin_factory_la_LIBADD = \
 	$(GTK_LIBS) \
-	$(sylpheed_build_dir)/src/libsylpheed-plugin-0.la \
-	$(sylpheed_build_dir)/libsylph/libsylph-0.la
+	$(LIBSYLPH_IMPL) \
+	$(LIBSYLPHEED_IMPL)
 
