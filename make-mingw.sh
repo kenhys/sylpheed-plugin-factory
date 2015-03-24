@@ -148,7 +148,15 @@ while [ $# -ne 0 ]; do
 	    DLL_FILE=$2.dll
 	    shift 2
 	    ;;
-        --release)
+        --sylpheed-dir)
+	    INC="$INC -I$2/src -I$2/libsylph"
+	    shift 2
+	    ;;
+        --sylplugin-factory-dir)
+	    INC="$INC -I$2"
+	    shift 2
+	    ;;
+	--release)
 	    shift
 	    if [ -z "$1" ]; then
 		usage && exit 1
