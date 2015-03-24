@@ -28,7 +28,7 @@ endif
 if WITH_LIBSYLPHEED_IMPL
 LIBSYLPHEED_IMPL = $(libslpheed_impl)
 else
-LIBSYLPHEED_IMPL = $(sylpheedbuild_dir)/src/libsylpheed-plugin-0.la
+LIBSYLPHEED_IMPL = $(sylpheed_build_dir)/src/libsylpheed-plugin-0.la
 endif
 
 libsylplugin_factory_la_LIBADD = \
