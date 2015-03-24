@@ -9,7 +9,7 @@ m4_define([SYLPF_VERSION],
 	  [SYLPF_MAJOR.SYLPF_MINOR.SYLPF_MICRO])
 AC_INIT([sylplugin_factory], [SYLPF_VERSION], [kenhys@gmail.com])
 AC_CONFIG_AUX_DIR([config])
-AC_CONFIG_SRCDIR([src/sylplugin_factory.h])
+AC_CONFIG_SRCDIR([src/sylplugin_factory.c])
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -52,6 +52,7 @@ m4_include(m4/sylplugin_factory.m4)
 
 AC_CONFIG_FILES([Makefile
                  sylplugin-factory.pc
+                 include/Makefile
                  src/Makefile
                  res/version.rc
 ])

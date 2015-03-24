@@ -2,14 +2,9 @@ lib_LTLIBRARIES = libsylplugin-factory.la
 
 libsylplugin_factory_la_SOURCES = \
 	sylplugin_factory.c \
-	sylplugin_factory.h
+	../include/sylplugin_factory.h
 
 libsylplugin_factory_la_LDFLAGS = -module -no-undefined -avoid-version
-
-sylpluginincludedir = $(includedir)/sylplugin-factory
-sylplugininclude_HEADERS = \
-	sylplugin_factory.h \
-	sylplugin_i18n.h
 
 AM_CPPFLAGS = \
 	$(GTK_CFLAGS) \
@@ -17,6 +12,7 @@ AM_CPPFLAGS = \
 	-I$(sylpheed_build_dir)/libsylph \
 	-I$(sylpheed_build_dir)/src \
 	-I$(top_srcdir) \
+	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/src
 
 if WITH_LIBSYLPH_IMPL
