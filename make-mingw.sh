@@ -85,7 +85,12 @@ function make_dll() {
     done
 
     OBJS=`find . -name '*.o'`
-    run gcc -shared -o $DLL_FILE $OBJS -L./lib $LIBSYLPH $LIBSYLPHEED $LIBS -lws2_32 -liconv
+    if [ -f "libsylplugin-factory.dll" ]; then
+	run gcc -shared -o $DLL_FILE $OBJS -L./lib $LIBSYLPH $LIBSYLPHEED libsylplugin-factory.dll $LIBS -lws2_32 -liconv
+
+    else
+	run gcc -shared -o $DLL_FILE $OBJS -L./lib $LIBSYLPH $LIBSYLPHEED $LIBS -lws2_32 -liconv
+    fi
     if [ -d "$SYLPLUGINDIR" ]; then
         com="cp $DLL_FILE \"$SYLPLUGINDIR/$DLL_FILE\""
         echo $com
