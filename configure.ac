@@ -2,13 +2,22 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.68])
-AC_INIT([sylplugin_factory], [0.1.0], [kenhys@gmail.com])
+m4_define([SYLPF_MAJOR], [0])
+m4_define([SYLPF_MINOR], [2])
+m4_define([SYLPF_MICRO], [0])
+m4_define([SYLPF_VERSION],
+	  [SYLPF_MAJOR.SYLPF_MINOR.SYLPF_MICRO])
+AC_INIT([sylplugin_factory], [SYLPF_VERSION], [kenhys@gmail.com])
 AC_CONFIG_AUX_DIR([config])
 AC_CONFIG_SRCDIR([src/sylplugin_factory.h])
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE
+
+AC_SUBST([MAJOR_VERSION], [SYLPF_MAJOR])
+AC_SUBST([MINOR_VERSION], [SYLPF_MINOR])
+AC_SUBST([MICRO_VERSION], [SYLPF_MICRO])
 
 # Checks for programs.
 AC_PROG_AWK
