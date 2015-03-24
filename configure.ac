@@ -41,7 +41,9 @@ m4_include(m4/sylplugin_factory.m4)
 
 AC_CONFIG_FILES([Makefile
                  sylplugin-factory.pc
-                 src/Makefile])
+                 src/Makefile
+                 res/version.rc
+])
 AC_OUTPUT
 
 dnl Output the configuration summary
