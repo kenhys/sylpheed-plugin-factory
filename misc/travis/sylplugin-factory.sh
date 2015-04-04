@@ -26,4 +26,4 @@ run() {
 }
 
 run git clone https://github.com/kenhys/sylpheed-plugin-factory.git
-(cd sylpheed-plugin-factory && ./autogen.sh && ./configure --prefix=/usr --with-sylpheed-build-dir=$HOME/sylpheed && make && sudo make install)
+(cd sylpheed-plugin-factory && ./autogen.sh && ./configure --prefix=/usr --with-sylpheed-build-dir=`pwd`/sylpheed && make && sudo make install)
