@@ -1,4 +1,4 @@
-
+#!/bin/sh
 
 red=31
 yellow=33
