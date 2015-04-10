@@ -18,5 +18,5 @@ fi
 
 
 SYLPHEED_BUILD_DIR=`pwd`/sylpheed
-PLUGIN_DIR=/usr/lib/sylpheed/plugins
-./configure $OPTIONS --with-sylpheed-build-dir=$SYLPHEED_BUILD_DIR --with-sylpheed-plugin-dir=$PLUGIN_DIR
+SYLPHEED_PLUGIN_DIR=/usr/lib/sylpheed/plugins
+./configure $OPTIONS --with-sylpheed-build-dir=$SYLPHEED_BUILD_DIR --with-sylpheed-plugin-dir=$SYLPHEED_PLUGIN_DIR
