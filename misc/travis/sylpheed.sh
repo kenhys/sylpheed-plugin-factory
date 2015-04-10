@@ -53,7 +53,7 @@ else
     esac
     run tar ixf sylpheed-$VERSION.tar.bz2
     run ln -sf sylpheed-$VERSION sylpheed
-    (cd sylpheed; ./configure --prefix=/usr; make; sudo make install)
+    (cd sylpheed && ./configure --prefix=/usr && make && sudo make install)
 fi
 
 if [ "$USE_SYLFILTER" = "yes" ]; then
