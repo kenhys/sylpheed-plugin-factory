@@ -25,3 +25,17 @@ copying:
 	echo "const gchar *copyright =\"\"" > src/copying.h
 	cat src/tmp.h >> src/copying.h
 	echo "\"\";" >> src/copying.h
+
+if WITH_LIBSYLPH_IMPL
+LIBSYLPH_IMPL = $(libsylph_impl)
+else
+LIBSYLPH_IMPL = $(sylpheed_build_dir)/libsylph/libsylph-0.la
+endif
+
+if WITH_LIBSYLPHEED_IMPL
+LIBSYLPHEED_IMPL = $(libslpheed_impl)
+else
+LIBSYLPHEED_IMPL = $(sylpheed_build_dir)/src/libsylpheed-plugin-0.la
+endif
+
+SYLPHEED_LIBS = $(LIBSYLPH_IMPL) (LIBSYLPHEED_IMPL)
