@@ -34,7 +34,7 @@ sudo apt-get install -qq libgpgme11-dev
 BASE_URL=http://sylpheed.sraoss.jp/sylpheed
 if [ "$SYLPHEED_STAGE"  = "master" ]; then
     run svn checkout svn://sylpheed.sraoss.jp/sylpheed/trunk sylpheed
-    (cd sylpheed && ./autogen.sh && ./configure --prefix=/usr && make && sudo make install)
+    (cd sylpheed && ./autogen.sh && ./configure --prefix=/tmp/local && make && sudo make install)
 else
     VERSION=
     case "$SYLPHEED_STAGE" in
@@ -53,11 +53,11 @@ else
     esac
     run tar ixf sylpheed-$VERSION.tar.bz2
     run ln -sf sylpheed-$VERSION sylpheed
-    (cd sylpheed && ./configure --prefix=/usr && make && sudo make install)
+    (cd sylpheed && ./configure --prefix=/tmp/local && make && sudo make install)
 fi
 
 if [ "$USE_SYLFILTER" = "yes" ]; then
     wget http://sylpheed.sraoss.jp/sylfilter/src/sylfilter-0.8.tar.gz
     tar xf sylfilter-0.8.tar.gz
-    (cd sylfilter-0.8 && ./configure --prefix=/usr && make && sudo make install)
+    (cd sylfilter-0.8 && ./configure --prefix=/tmp/local && make && sudo make install)
 fi
