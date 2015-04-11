@@ -19,6 +19,7 @@ fi
 PREFIX=/tmp/local
 SYLPHEED_BUILD_DIR=`pwd`/sylpheed
 SYLPHEED_PLUGIN_DIR=$PREFIX/lib/sylpheed/plugins
-PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig ./configure $OPTIONS \
+export PKG_CONFIG_PATH=$PREFIX/lib/pkgconfig
+./configure $OPTIONS \
 	    --with-sylpheed-build-dir=$SYLPHEED_BUILD_DIR \
 	    --with-sylpheed-plugin-dir=$SYLPHEED_PLUGIN_DIR
