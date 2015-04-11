@@ -38,10 +38,6 @@ if [ "$SYLPHEED_STAGE"  = "master" ]; then
 else
     VERSION=
     case "$SYLPHEED_STAGE" in
-	3.3)
-	    VERSION=3.3.1
-	    run wget $BASE_URL/v3.3/sylpheed-$VERSION.tar.bz2
-	    ;;
 	3.4)
 	    VERSION=3.4.2
 	    run wget $BASE_URL/v3.4/sylpheed-$VERSION.tar.bz2
