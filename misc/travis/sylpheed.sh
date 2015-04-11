@@ -47,7 +47,7 @@ else
 	    run wget $BASE_URL/v3.4/sylpheed-$VERSION.tar.bz2
 	    ;;
 	3.5|beta|*)
-	    VERSION=3.5.0beta1
+	    VERSION=3.5.0beta2
 	    run wget $BASE_URL/v3.5beta/sylpheed-$VERSION.tar.bz2
 	    ;;
     esac
