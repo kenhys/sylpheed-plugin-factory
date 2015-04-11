@@ -18,4 +18,6 @@ fi
 
 SYLPHEED_BUILD_DIR=`pwd`/sylpheed
 SYLPHEED_PLUGIN_DIR=/tmp/local/lib/sylpheed/plugins
-./configure $OPTIONS --with-sylpheed-build-dir=$SYLPHEED_BUILD_DIR --with-sylpheed-plugin-dir=$SYLPHEED_PLUGIN_DIR
+./configure $OPTIONS \
+	    --with-sylpheed-build-dir=$SYLPHEED_BUILD_DIR \
+	    --with-sylpheed-plugin-dir=$SYLPHEED_PLUGIN_DIR
