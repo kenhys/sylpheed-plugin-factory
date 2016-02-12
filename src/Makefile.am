@@ -4,7 +4,7 @@ libsylplugin_factory_la_SOURCES = \
 	sylplugin_factory.c \
 	../include/sylplugin_factory.h
 
-libsylplugin_factory_la_LDFLAGS = -module -no-undefined -avoid-version
+libsylplugin_factory_la_LDFLAGS = -no-undefined -avoid-version
 
 AM_CPPFLAGS = \
 	$(GTK_CFLAGS) \
